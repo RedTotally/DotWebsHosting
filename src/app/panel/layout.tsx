@@ -45,36 +45,66 @@ export default function Panel() {
   return (
     <div className="p-10">
       <div className="">
+        <div className="flex justify-between items-center">
         <p className="text-3xl font-bold">Hosting Overview</p>
-        <div className="grid grid-cols-3 gap-5 mt-5">
-          <div className="p-10 bg-white shadow-sm rounded-md border-[.1em] border-black">
-            <img
-              className="bg-indigo-500 p-5 rounded-full"
-              src="/doc.svg"
-            ></img>
-            <p className="text-6xl mt-5 font-bold">2</p>
-            <p className="text-gray-600">Hosting Files</p>
+        <a className="text-sm bg-black text-white px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">Download All Hosting Files</a>
+        </div>
+        <hr className="mt-5 mb-5"></hr>
+        <div className="grid grid-cols-4 gap-5 mt-5">
+          <div className="grid grid-rows-3 gap-5">
+            <div className="p-5 bg-white shadow-sm rounded-md border-[.1em]">
+              <div className="flex justify-center">
+                <img
+                  className="bg-indigo-500 p-5 rounded-full"
+                  src="/doc.svg"
+                ></img>
+              </div>
+              <p className="text-center text-3xl mt-5 font-bold">2</p>
+              <p className="text-center text-gray-600">Hosting Files</p>
+            </div>
+            <div className="p-5 bg-white shadow-sm rounded-md border-[.1em]">
+              <div className="flex justify-center">
+                <img
+                  className="bg-indigo-500 p-5 rounded-full"
+                  src="/folder.svg"
+                ></img>
+              </div>
+              <p className="text-center text-3xl mt-5 font-bold">205MB</p>
+              <p className="text-center text-gray-600">File Size</p>
+            </div>
+            <div className="p-5 bg-white shadow-sm rounded-md border-[.1em]">
+              <div className="flex justify-center">
+                <img
+                  className="bg-indigo-500 p-5 rounded-full"
+                  src="/verified.svg"
+                ></img>
+              </div>
+              <p className="text-center text-3xl mt-5 font-bold text-green-500">
+                Active
+              </p>
+              <p className="text-center text-gray-600">Website Status</p>
+            </div>
           </div>
-          <div className="p-10 bg-white shadow-sm rounded-md border-[.1em] border-black">
-            <img
-              className="bg-indigo-500 p-5 rounded-full"
-              src="/folder.svg"
-            ></img>
-            <p className="text-6xl mt-5 font-bold">205MB</p>
-            <p className="text-gray-600">File Size</p>
-          </div>
-          <div className="p-10 bg-white shadow-sm rounded-md border-[.1em] border-black">
-            <img
-              className="bg-indigo-500 p-5 rounded-full"
-              src="/folder.svg"
-            ></img>
-            <p className="text-6xl mt-5 font-bold text-green-500">Active</p>
-            <p className="text-gray-600">Website Status</p>
+          <div className="col-span-3 hover:brightness-[90%] duration-300 cursor-pointer">
+            <div className="bg-white flex items-center justify-center border-[.1em] shadow-sm rounded-md w-full h-full">
+              <input
+                className="w-full h-full bg-black rounded-md opacity-0"
+                type="file"
+                onChange={handleFileChange}
+                multiple
+              />
+              <div className="absolute">
+                <div className="flex justify-center"><img className="w-[15em]" src="/undraw_my_files_swob.svg"></img></div>
+              <p className="text-xs mt-5">Let us handle your files gently, drag them here. Or, you can actually click here.</p>
+              </div>
+            </div>
           </div>
         </div>
-        <input type="file" onChange={handleFileChange} multiple />
-        <button onClick={handleUpload}>Upload</button>
       </div>
+      <div className="flex justify-between items-center mt-10">
+        <p className="text-3xl font-bold">Hosting Files</p>
+        </div>
+        <hr className="mt-5 mb-5"></hr>
     </div>
   );
 }

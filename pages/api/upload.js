@@ -10,7 +10,7 @@ export const config = {
 export default async (req, res) => {
   const form = new formidable.IncomingForm();
   
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, (err) => {
     if (err) {
       res.status(500).send(err);
       return;

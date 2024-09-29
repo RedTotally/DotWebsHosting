@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 // pages/api/upload.js
 import formidable from 'formidable';
 

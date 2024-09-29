@@ -77,8 +77,30 @@ export default function Home() {
           </div>
         </div>
 
+        <p className="text-3xl xl:text-6xl mt-20 font-bold">
+          A document teaching all the necessary things.
+        </p>
+        <img
+          className="border-[.1em] shadow-sm rounded-xl mt-20"
+          src="/placeholder.png"
+        ></img>
 
+        <div>
+          <p className="font-bold text-3xl xl:text-6xl mt-20 lg:w-[15em]">
+            How efficient are we for the newbie developer?
+          </p>
+        </div>
+        <p className="mt-5 lg:text-xl text-gray-600">
+        Dedicated to assisting newbie developers who just finished their tutorial.
+        </p>
+        <img className="border-[.1em] shadow-sm rounded-xl mt-20" src="/placeholder_2.png"></img>
 
+        <div className="flex justify-center mt-20"><img className="lg:w-[15em]" src="/godotwebs.png"></img></div>
+        <p className="text-center mt-5 text-2xl">Service Under The GoDotWebs System.</p>
+        <div className="flex justify-center mt-5"><p className="text-sm lg:w-[50em] text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi laudantium inventore ab! Dolorem, praesentium fuga numquam, fugit incidunt perspiciatis molestiae cum nulla exercitationem ipsam aut tenetur distinctio repellendus asperiores labore saepe aliquam hic! Blanditiis odio tempora cupiditate itaque, deleniti expedita quaerat fuga culpa aspernatur perferendis facilis illo iusto obcaecati consequatur.</p></div>
+      
+      <div className="flex justify-center"><p className="text-3xl lg:text-6xl mt-20 text-center lg:w-[15em]">Want to have a taste of our hosting service?</p></div>
+      <div className="flex justify-center mt-10"><a className="text-center bg-black px-10 p-5 text-white rounded-md cursor-pointer hover:brightness-[90%] duration-300">Get DotWebsHosting Free</a></div>
       </div>
     </>
   );

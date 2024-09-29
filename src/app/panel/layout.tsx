@@ -85,10 +85,10 @@ export default function Panel() {
               <p className="text-center text-gray-600">Website Status</p>
             </div>
           </div>
-          <div className="col-span-3 hover:brightness-[90%] duration-300 cursor-pointer">
+          <div className="col-span-3 hover:brightness-[90%] duration-300">
             <div className="bg-white flex items-center justify-center border-[.1em] shadow-sm rounded-md w-full h-full">
               <input
-                className="w-full h-full bg-black rounded-md opacity-0"
+                className="w-full h-full bg-black rounded-md opacity-0 relative z-[50] cursor-pointer"
                 type="file"
                 onChange={handleFileChange}
                 multiple

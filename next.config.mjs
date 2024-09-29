@@ -1,4 +1,4 @@
-import { withPlugins } from 'next-compose-plugins'
+import withPlugins from 'next-compose-plugins';
 const nextConfig = {
   webpack: (config) => {
     // Add a custom plugin to handle `node:` imports

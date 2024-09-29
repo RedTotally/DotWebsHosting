@@ -1,6 +1,5 @@
 // pages/api/upload.js
 import formidable from 'formidable';
-import fs from 'fs';
 
 export const config = {
   api: {

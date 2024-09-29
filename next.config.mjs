@@ -1,4 +1,5 @@
 import withPlugins from 'next-compose-plugins';
+
 const nextConfig = {
   webpack: (config) => {
     // Add a custom plugin to handle `node:` imports
@@ -9,4 +10,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

@@ -32,8 +32,8 @@ export default function ClientLayout({
         <div
           className={
             menuVisibility == false
-              ? "top-0 left-[100em] lg:left-0 py-5 p-10 lg:p-0 fixed lg:relative lg:flex items-center bg-white lg:bg-transparent w-full h-full lg:w-auto lg:h-auto z-[99] duration-300"
-              : "top-0 left-[0] py-5 p-10 lg:p-0 fixed lg:relative lg:flex items-center bg-white lg:bg-transparent w-full h-full lg:w-auto lg:h-auto z-[99] duration-300"
+              ? "top-0 left-[100em] lg:left-0 py-5 p-10 lg:p-0 fixed lg:relative lg:flex items-center bg-white lg:bg-transparent w-full h-[100vh] lg:w-auto lg:h-auto z-[99] duration-300"
+              : "top-0 left-[0] py-5 p-10 lg:p-0 fixed lg:relative lg:flex items-center bg-white lg:bg-transparent w-full h-[100vh] lg:w-auto lg:h-auto z-[99] duration-300"
           }
         >
           <div className="flex lg:hidden items-center justify-between">

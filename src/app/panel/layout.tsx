@@ -12,6 +12,10 @@ export default function Panel() {
   const [serverRunning, setServerRunning] = useState<boolean | null>(null);
 
   useEffect(() => {
+    console.log(files)
+  }, []);
+
+  useEffect(() => {
     checkServerStatus();
   }, []);
 
@@ -49,20 +53,22 @@ export default function Panel() {
     if (rawSize < 10737418240) {
       console.log("Size verification passed.");
       const selectedFiles = Array.from(e.target.files || []);
+      const selectedFilesSize = selectedFiles.reduce((total, file) => total + file.size, 0)
 
-      if (selectedFiles.length > 0 && username) {
-        setFiles(selectedFiles);
-        handleUpload(selectedFiles);
-      } else {
-        alert("Please select files and enter a username to upload.");
+      if(selectedFilesSize < 1000000000){
+        if (selectedFiles.length > 0 && username) {
+          setFiles(selectedFiles);
+          handleUpload(selectedFiles);
+        } else {
+          alert("Please select files and enter a username to upload.");
+        }
+      }else{
+        console.log("Size limit exceeded. 001")
       }
+      
     }else{
-      console.log("Size limit exceeded.")
+      console.log("Size limit exceeded. 002")
     }
-  };
-
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
   };
 
   const handleUpload = async (selectedFiles: File[]) => {

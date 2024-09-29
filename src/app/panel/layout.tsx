@@ -1,25 +1,79 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Panel() {
   const [files, setFiles] = useState<File[]>([]);
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [totalFiles, setTotalFiles] = useState<number>(0);
+  const [totalSize, setTotalSize] = useState<string>("0 MB");
+  const [rawSize, setRawSize] = useState<number>(0);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || []);
-    setFiles(selectedFiles);
+  const [serverRunning, setServerRunning] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    checkServerStatus();
+  }, []);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const checkServerStatus = async () => {
+    try {
+      const response = await fetch("http://192.168.0.82:3000/status");
+      const data = await response.json();
+      if (data.running) {
+        setServerRunning(true);
+      }
+    } catch (error) {
+      console.error("Error checking server status:", error);
+      setServerRunning(false);
+    }
   };
 
-  const handleUpload = async () => {
-    if (files.length === 0 || !username) {
-      alert("Please select files and enter a username to upload");
+  const fetchStats = async () => {
+    try {
+      const response = await fetch("http://192.168.0.82:3000/stats");
+      const data = await response.json();
+      setTotalFiles(data.totalFiles);
+      setTotalSize(data.totalSize);
+      setRawSize(data.rawSize);
+    } catch (error) {
+      console.error("Error fetching stats:", error);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(rawSize)
+    if (rawSize < 10737418240) {
+      console.log("Size verification passed.");
+      const selectedFiles = Array.from(e.target.files || []);
+
+      if (selectedFiles.length > 0 && username) {
+        setFiles(selectedFiles);
+        handleUpload(selectedFiles);
+      } else {
+        alert("Please select files and enter a username to upload.");
+      }
+    }else{
+      console.log("Size limit exceeded.")
+    }
+  };
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const handleUpload = async (selectedFiles: File[]) => {
+    if (selectedFiles.length === 0 || !username) {
+      alert("Please select files and enter a username to upload.");
       return;
     }
 
     const formData = new FormData();
     formData.append("username", username);
-    files.forEach((file) => {
+    selectedFiles.forEach((file) => {
       formData.append("files", file);
     });
 
@@ -33,6 +87,8 @@ export default function Panel() {
         throw new Error("Upload failed");
       }
 
+      const result = await response.text();
+      console.log(result);
       alert("Files uploaded successfully!");
       setFiles([]);
       setUsername("");
@@ -46,8 +102,10 @@ export default function Panel() {
     <div className="p-10">
       <div className="">
         <div className="flex justify-between items-center">
-        <p className="text-3xl font-bold">Hosting Overview</p>
-        <a className="text-sm bg-black text-white px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">Download All Hosting Files</a>
+          <p className="text-3xl font-bold">Hosting Overview</p>
+          <a className="text-sm bg-black text-white px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">
+            Download All Hosting Files
+          </a>
         </div>
         <hr className="mt-5 mb-5"></hr>
         <div className="grid grid-cols-4 gap-5 mt-5">
@@ -59,7 +117,9 @@ export default function Panel() {
                   src="/doc.svg"
                 ></img>
               </div>
-              <p className="text-center text-3xl mt-5 font-bold">2</p>
+              <p className="text-center text-3xl mt-5 font-bold">
+                {totalFiles}
+              </p>
               <p className="text-center text-gray-600">Hosting Files</p>
             </div>
             <div className="p-5 bg-white shadow-sm rounded-md border-[.1em]">
@@ -69,7 +129,7 @@ export default function Panel() {
                   src="/folder.svg"
                 ></img>
               </div>
-              <p className="text-center text-3xl mt-5 font-bold">205MB</p>
+              <p className="text-center text-3xl mt-5 font-bold">{totalSize}</p>
               <p className="text-center text-gray-600">File Size</p>
             </div>
             <div className="p-5 bg-white shadow-sm rounded-md border-[.1em]">
@@ -79,8 +139,14 @@ export default function Panel() {
                   src="/verified.svg"
                 ></img>
               </div>
-              <p className="text-center text-3xl mt-5 font-bold text-green-500">
-                Active
+              <p
+                className={
+                  serverRunning === false
+                    ? "text-center text-3xl mt-5 font-bold text-red-500"
+                    : "text-center text-3xl mt-5 font-bold text-green-500"
+                }
+              >
+                {serverRunning === false ? "Deactivate" : "Activate"}
               </p>
               <p className="text-center text-gray-600">Website Status</p>
             </div>
@@ -94,8 +160,16 @@ export default function Panel() {
                 multiple
               />
               <div className="absolute">
-                <div className="flex justify-center"><img className="w-[15em]" src="/undraw_my_files_swob.svg"></img></div>
-              <p className="text-xs mt-5">Let us handle your files gently, drag them here. Or, you can actually click here.</p>
+                <div className="flex justify-center">
+                  <img
+                    className="w-[15em]"
+                    src="/undraw_my_files_swob.svg"
+                  ></img>
+                </div>
+                <p className="text-xs mt-5">
+                  Let us handle your files gently, drag them here. Or, you can
+                  actually click here.
+                </p>
               </div>
             </div>
           </div>
@@ -103,8 +177,8 @@ export default function Panel() {
       </div>
       <div className="flex justify-between items-center mt-10">
         <p className="text-3xl font-bold">Hosting Files</p>
-        </div>
-        <hr className="mt-5 mb-5"></hr>
+      </div>
+      <hr className="mt-5 mb-5"></hr>
     </div>
   );
 }

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "cookies-next": "^4.2.1",
+    "firebase": "^10.14.0",
     "formidable": "^3.5.1",
     "next": "14.2.13",
     "next-compose-plugins": "^2.2.1",

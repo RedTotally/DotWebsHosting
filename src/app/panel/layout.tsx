@@ -147,12 +147,12 @@ export default function Panel() {
               </div>
               <p
                 className={
-                  serverRunning === false
+                  serverRunning === false || serverRunning === null
                     ? "text-center text-3xl mt-5 font-bold text-red-500"
                     : "text-center text-3xl mt-5 font-bold text-green-500"
                 }
               >
-                {serverRunning === false ? "Deactivate" : "Activate"}
+                {serverRunning === false || serverRunning === null ? "Deactivate" : "Activate"}
               </p>
               <p className="text-center text-gray-600">Website Status</p>
             </div>

@@ -27,6 +27,8 @@ export default function Register() {
   const [popMessage, setPopMessage] = useState("");
   const [popMessageColor, setPopMessageColor] = useState("");
 
+  const [generatedCode, setGeneratedCode] = useState("");
+
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
     authDomain: "godotwebs.firebaseapp.com",
@@ -38,6 +40,18 @@ export default function Register() {
 
   const app = initializeApp(config);
   const db = getFirestore(app);
+
+  async function generateVerificationCode() {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < 20; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    setGeneratedCode(result);
+  }
 
   async function dataSubmit() {
     var lock = false;
@@ -71,7 +85,7 @@ export default function Register() {
 
     const dataRef = doc(db, "Users", username);
 
-    const generatedCode = Math.floor(
+    const generatedCookieCode = Math.floor(
       Math.random() * (1000000000 - 100000000) + 100000000
     );
 
@@ -109,14 +123,18 @@ export default function Register() {
       setDoc(dataRef, {
         Email: email,
         Username: username,
+        Fixed_Username : username,
         Password: password,
-        Code: generatedCode,
+        Code: generatedCookieCode,
+        Verified: false,
+        Product: "DotWebsHosting",
+        Verification_Code: generatedCode,
       });
-      setCookie("_a", generatedCode);
+      setCookie("_a", generatedCookieCode);
       console.log("Account created.");
       setPopMessage("Account created, please wait.");
       setPopMessageColor("#00b300");
-      window.location.replace("/");
+      window.location.replace("profile");
     } else {
       console.log("Locked.");
     }
@@ -147,6 +165,7 @@ export default function Register() {
 
   useEffect(() => {
     loggedInCheck();
+    generateVerificationCode();
   }, []);
 
   return (
@@ -161,7 +180,13 @@ export default function Register() {
               We are very pleased to see you here. 💖
             </p>
             <div className="mt-5">
-              <div className="flex justify-center rounded-md w-full bg-black cursor-pointer hover:brightness-[90%] duration-300">
+              <div
+                onClick={() => [
+                  setPopMessage("Sorry, this option is currently unavailable."),
+                  setPopMessageColor("#FF0000"),
+                ]}
+                className="flex justify-center rounded-md w-full bg-black cursor-pointer hover:brightness-[90%] duration-300"
+              >
                 <img className="w-5" src="/google.svg"></img>
                 <a className="block items-center text-center text-white p-3 rounded-md text-sm">
                   Continue with Google

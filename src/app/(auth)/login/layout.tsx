@@ -11,7 +11,7 @@ import {
   where,
 } from "firebase/firestore";
 
-import { setCookie, getCookie } from 'cookies-next';
+import { setCookie, getCookie } from "cookies-next";
 
 export default function Login() {
   var cookie = getCookie("_a");
@@ -20,6 +20,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+
+  const [popMessage, setPopMessage] = useState("");
+  const [popMessageColor, setPopMessageColor] = useState("");
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
@@ -38,18 +41,27 @@ export default function Login() {
 
     const querySnapshot = await getDocs(q);
 
+    if (username == "" || password == "") {
+      setPopMessage("Please enter a valid username and password.");
+      setPopMessageColor("#FF0000");
+    }
+
     querySnapshot.forEach((doc) => {
       const data = doc.data();
 
       if (data.Password == password) {
         console.log("The username and password are matched.");
+        setPopMessage("Logging you in, please wait for a moment.");
+        setPopMessageColor("#00b300");
+        setCookie("_a", data.Code);
+        window.location.replace("/panel/" + username);
       } else {
         console.log("The username and password are not matched.");
+        setPopMessage(
+          "The password is incorrect, please consider trying it again."
+        );
+        setPopMessageColor("#FF0000");
       }
-
-      setCookie('_a', data.Code)
-      window.location.replace("/")
-
     });
   }
 
@@ -77,7 +89,13 @@ export default function Login() {
               We are very pleased to see you again. 💖
             </p>
             <div className="mt-5">
-              <div className="flex justify-center rounded-md w-full bg-black cursor-pointer hover:brightness-[90%] duration-300">
+              <div
+                onClick={() => [
+                  setPopMessage("Sorry, this option is currently unavailable."),
+                  setPopMessageColor("#FF0000"),
+                ]}
+                className="flex justify-center rounded-md w-full bg-black cursor-pointer hover:brightness-[90%] duration-300"
+              >
                 <img className="w-5" src="/google.svg"></img>
                 <a className="block items-center text-center text-white p-3 rounded-md text-sm">
                   Continue with Google
@@ -97,7 +115,7 @@ export default function Login() {
                 placeholder="Enter your password..."
                 className="outline-blue-300 border-[.1em] w-full mt-2 p-2 rounded-md"
               ></input>
-                            <a
+              <a
                 onClick={() =>
                   passwordVisibility == false
                     ? setPasswordVisibility(true)
@@ -120,12 +138,22 @@ export default function Login() {
                 </span>
                 . We wish you a smooth experience with full protection.
               </p>
-              <a onClick={scanData} className="mt-5 mb-2 block text-xs bg-indigo-500 text-white text-center p-3 rounded-md cursor-pointer hover:brightness-[90%] duration-300">
+              <a
+                onClick={scanData}
+                className="mt-5 mb-2 block text-xs bg-indigo-500 text-white text-center p-3 rounded-md cursor-pointer hover:brightness-[90%] duration-300"
+              >
                 Login to the GoDotWebs System
               </a>
+
               <a className="tex-sm underline cursor-pointer">
                 Forgot Password?
               </a>
+              <p
+                style={{ color: popMessageColor }}
+                className="text-center mt-5"
+              >
+                {popMessage}
+              </p>
             </div>
           </div>
         </div>

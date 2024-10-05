@@ -1,18 +1,80 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getCookie } from "cookies-next";
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  query,
+  collection,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 export default function Panel() {
+  const cookie = getCookie("_a");
+
   const [files, setFiles] = useState<File[]>([]);
-  const [username, setUsername] = useState("admin");
+  const [username, setUsername] = useState("");
   const [totalFiles, setTotalFiles] = useState<number>(0);
   const [totalSize, setTotalSize] = useState<string>("0 MB");
   const [rawSize, setRawSize] = useState<number>(0);
 
   const [serverRunning, setServerRunning] = useState<boolean | null>(null);
 
+  const config = {
+    apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
+    authDomain: "godotwebs.firebaseapp.com",
+    projectId: "godotwebs",
+    storageBucket: "godotwebs.appspot.com",
+    messagingSenderId: "1000371246246",
+    appId: "1:1000371246246:web:4a9de4906743aaf3611067",
+  };
+
+  const app = initializeApp(config);
+  const db = getFirestore(app);
+
+  console.log("Cookie: " + cookie);
+
+  async function cookieChecker() {
+    if (!cookie) {
+      console.log("User not found. C001");
+      window.location.replace("/");
+    } else {
+      if (cookie.length < 1) {
+        console.log("User not found. C002");
+        window.location.replace("/");
+      }
+    }
+  }
+
+  async function checkUser() {
+    const q = query(
+      collection(db, "Users"),
+      where("Code", "==", Number(cookie))
+    );
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      setUsername(data.Username);
+      console.log("Data fetched.");
+    });
+  }
+
   useEffect(() => {
-    console.log(files)
+    checkUser();
+  }, []);
+
+  useEffect(() => {
+    cookieChecker();
+  }, []);
+
+  useEffect(() => {
+    console.log(files);
   }, []);
 
   useEffect(() => {
@@ -49,25 +111,27 @@ export default function Panel() {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(rawSize)
+    console.log(rawSize);
     if (rawSize < 10737418240) {
       console.log("Size verification passed.");
       const selectedFiles = Array.from(e.target.files || []);
-      const selectedFilesSize = selectedFiles.reduce((total, file) => total + file.size, 0)
+      const selectedFilesSize = selectedFiles.reduce(
+        (total, file) => total + file.size,
+        0
+      );
 
-      if(selectedFilesSize < 1000000000){
+      if (selectedFilesSize < 1000000000) {
         if (selectedFiles.length > 0 && username) {
           setFiles(selectedFiles);
           handleUpload(selectedFiles);
         } else {
           alert("Please select files and enter a username to upload.");
         }
-      }else{
-        console.log("Size limit exceeded. 001")
+      } else {
+        console.log("Size limit exceeded. 001");
       }
-      
-    }else{
-      console.log("Size limit exceeded. 002")
+    } else {
+      console.log("Size limit exceeded. 002");
     }
   };
 
@@ -108,7 +172,7 @@ export default function Panel() {
     <div className="p-10">
       <div className="">
         <div className="flex justify-between items-center">
-          <p className="text-3xl font-bold">Hosting Overview</p>
+          <p className="text-3xl font-bold">{username}&apos;s Hosting Overview</p>
           <a className="text-sm bg-black text-white px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">
             Download All Hosting Files
           </a>
@@ -152,7 +216,9 @@ export default function Panel() {
                     : "text-center text-3xl mt-5 font-bold text-green-500"
                 }
               >
-                {serverRunning === false || serverRunning === null ? "Deactivate" : "Activate"}
+                {serverRunning === false || serverRunning === null
+                  ? "Deactivate"
+                  : "Activate"}
               </p>
               <p className="text-center text-gray-600">Website Status</p>
             </div>

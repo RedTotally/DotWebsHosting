@@ -26,6 +26,7 @@ export default function ClientLayout({
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [username, setUsername] = useState("");
+  const [verified, setVerified] = useState()
 
   const [optionsVisibility, setOptionsVisibility] = useState(false)
 
@@ -59,6 +60,7 @@ export default function ClientLayout({
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       setUsername(data.Username);
+      setVerified(data.Verified)
       console.log("Data fetched.");
     });
   }
@@ -68,8 +70,14 @@ export default function ClientLayout({
     checkUser();
   }, []);
 
+  async function logOut() {
+    setCookie("_a", "")
+    window.location.replace("/")
+  }
+
   return (
     <>
+    <div className={verified == false ? "bg-red-500" : "hidden"}><p className="text-white p-3 text-center">Your account isn't verified yet. To unlock all the features, please go to your <Link href={"/profile"} className="underline cursor-pointer">profile</Link> to verify your account.</p></div>
     <div onClick={() => setOptionsVisibility(false)} className={optionsVisibility == true ? "fixed w-full h-full z-[98]" : "hidden"}></div>
       <div className="opacity-[50%] fixed inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
@@ -85,7 +93,7 @@ export default function ClientLayout({
           <img
             onClick={() => setMenuVisibility(true)}
             className="cursor-pointer lg:hidden"
-            src="menu.svg"
+            src="/menu.svg"
           ></img>
         </div>
         <div
@@ -107,7 +115,7 @@ export default function ClientLayout({
             <img
               onClick={() => setMenuVisibility(false)}
               className="cursor-pointer lg:hidden"
-              src="close.svg"
+              src="/close.svg"
             ></img>
           </div>
           <div className="mt-5 lg:mt-0"></div>
@@ -162,9 +170,9 @@ export default function ClientLayout({
           </a>
           <div className={optionsVisibility == true ? "rounded-md absolute lg:right-0 z-[99] bg-white mt-2 lg:mt-44 shadow-sm border-[.1em]" : "hidden"}>
             <ul>
-              <li onClick={() => [setOptionsVisibility(false), setMenuVisibility(false)]} className="px-12 p-3 hover:bg-gray-100 cursor-pointer duration-300 text-sm text-center">Your Profile</li>
-              <Link href={"/panel"} onClick={() => [setOptionsVisibility(false), setMenuVisibility(false)]} className="block px-12 p-3 hover:bg-gray-100 cursor-pointer duration-300 text-sm text-center">Your Panel</Link>
-              <li onClick={() => [setOptionsVisibility(false), setMenuVisibility(false)]} className="px-12 p-3 bg-black rounded-b-md text-white hover:brightness-[90%] cursor-pointer duration-300 text-sm text-center">Log Out</li>
+              <Link href={"/profile"} onClick={() => [setOptionsVisibility(false), setMenuVisibility(false)]} className="block px-12 p-3 hover:bg-gray-100 cursor-pointer duration-300 text-sm text-center">Your Profile</Link>
+              <Link href={"/panel/" + username} onClick={() => [setOptionsVisibility(false), setMenuVisibility(false)]} className="block px-12 p-3 hover:bg-gray-100 cursor-pointer duration-300 text-sm text-center">Your Panel</Link>
+              <li onClick={() => [setOptionsVisibility(false), setMenuVisibility(false), logOut()]} className="px-12 p-3 bg-black rounded-b-md text-white hover:brightness-[90%] cursor-pointer duration-300 text-sm text-center">Log Out</li>
             </ul>
           </div>
         </div>

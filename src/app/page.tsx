@@ -1,8 +1,26 @@
 "use client"
 
 import Link from "next/link";
+import { getCookie } from "cookies-next";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+
+  const [loggedIn, setLoggedIn] = useState(false)
+  var cookie = getCookie("_a")
+
+  async function checkLoggedIn() {
+    if(cookie){
+      if(cookie.length > 0){
+        setLoggedIn(true)
+      }
+    }
+  }
+
+  useEffect(() => {
+    checkLoggedIn()
+  }, [])
+
   return (
     <>
       <div className="p-10 lg:p-20 xl:flex items-center justify-between">
@@ -14,7 +32,7 @@ export default function Home() {
             The Best Hosting Service Ever Created for Newbie Developers.
           </p>
           <div className="lg:flex items-center mt-5">
-            <Link href={"/register"} className="cursor-pointer block bg-black text-white p-5 rounded-md hover:brightness-[90%] duration-300">
+            <Link href={loggedIn == false ? "/register" : "/"} className="cursor-pointer block bg-black text-white p-5 rounded-md hover:brightness-[90%] duration-300">
               Get DoWebsHosting Free
             </Link>
             <Link target="_blank" href={"https://godotwebs.com"} className="block py-5 lg:p-5 ml-5 cursor-pointer hover:before:scale-x-100 lg:hover:before:origin-left relative lg:before:w-full before:h-[.1em] before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-gray-500 before:absolute before:left-0 before:bottom-0">
@@ -95,7 +113,7 @@ export default function Home() {
         <div className="flex justify-center mt-5 text-gray-600"><p className="text-sm lg:w-[50em] text-center">GoDotWebs is our main brand and company. The GoDotWebs system stores all the accounts associated with our services when you register an account on any platform under the GoDotWebs system. It means that with one single account stored in our main database, you can access the services we provide. That cut out so much time and was more efficient and safe. As we value every single one of our users, we wish you to be one of us too.</p></div>
       
       <div className="flex justify-center"><p className="text-3xl lg:text-6xl mt-20 text-center lg:w-[15em]">Want to have a taste of our hosting service?</p></div>
-      <div className="flex justify-center mt-10"><Link href={"/register"} className="text-center bg-black px-10 p-5 text-white rounded-md cursor-pointer hover:brightness-[90%] duration-300">Get DotWebsHosting Free</Link></div>
+      <div className="flex justify-center mt-10"><Link href={loggedIn == false ? "/register" : "/"} className="text-center bg-black px-10 p-5 text-white rounded-md cursor-pointer hover:brightness-[90%] duration-300">Get DotWebsHosting Free</Link></div>
       </div>
     </>
   );

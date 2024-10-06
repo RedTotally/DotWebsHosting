@@ -106,7 +106,7 @@ export default function Reset() {
 This email is to inform you that your DotWebsHosting account password has been changed.
 
 You may now log in with your new password via this link: 
-http://localhost:3000/login
+https://dotwebshosting.com/login
 
 Best Regards,
 Ricky Chan

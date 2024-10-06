@@ -139,7 +139,7 @@ Username: ${username}
 Email: ${email}
   
 It's a pleasure to see such a valuable user like you. Nevertheless, we have to verify your email identity to protect our user base. We hope for your understanding. Thus, please verify your email via the link below: 
-http://localhost:3000/verification/${verificationCode}
+https://dotwebshosting.com/verification/${verificationCode}
   
 By verifying your account, you will be officially recognized as a part of us and in our great GoDotWebs system. We are delighted to see you around and wish you the best.
         

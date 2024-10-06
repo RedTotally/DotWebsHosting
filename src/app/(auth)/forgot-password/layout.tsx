@@ -68,7 +68,7 @@ Username: ${dynamicUsername}
 Email: ${submittedEmail}
   
 Your journey has been stopped because you forgot which path you stepped. You're lost, yet eager to continue. It's our responsibility to trace you back to the path you've been going, but it's time to set a new path you tend to remember. Here's a link for you to reset your password, be well: 
-http://localhost:3000/reset-password/${dynamicResetCode}
+https://dotwebshosting.com/reset-password/${dynamicResetCode}
   
 We appreciate your effort in continuing to use our product. We will be delighted to see your return. Wish you the best.
         

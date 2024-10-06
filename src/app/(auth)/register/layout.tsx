@@ -28,6 +28,7 @@ export default function Register() {
   const [popMessageColor, setPopMessageColor] = useState("");
 
   const [generatedCode, setGeneratedCode] = useState("");
+  const [generatedCode_2, setGeneratedCode_2] = useState("");
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
@@ -51,6 +52,18 @@ export default function Register() {
       );
     }
     setGeneratedCode(result);
+  }
+
+  async function generateVerificationCode_2() {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < 20; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    setGeneratedCode_2(result);
   }
 
   async function dataSubmit() {
@@ -123,13 +136,15 @@ export default function Register() {
       setDoc(dataRef, {
         Email: email,
         Username: username,
-        Fixed_Username : username,
+        Fixed_Username: username,
         Password: password,
         Code: generatedCookieCode,
         Verified: false,
         Product: "DotWebsHosting",
         Verification_Code: generatedCode,
+        Password_Reset_Code: generatedCode_2,
       });
+      registrationSetUp();
       setCookie("_a", generatedCookieCode);
       console.log("Account created.");
       setPopMessage("Account created, please wait.");
@@ -166,7 +181,22 @@ export default function Register() {
   useEffect(() => {
     loggedInCheck();
     generateVerificationCode();
+    generateVerificationCode_2();
   }, []);
+
+  async function registrationSetUp() {
+    const response = await fetch('http://192.168.0.82:3000/create-directory', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username }),
+    });
+
+    if (response.ok) {
+      console.log('User registered and directories created successfully.');
+    } else {
+      console.error('Failed to create directories.');
+    }
+  }
 
   return (
     <>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -14,8 +15,9 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-export default function ForgotPassword() {
-  const [submittedEmail, setSubmittedEmail] = useState("");
+export default function Reset() {
+  const [submittedPassword, setSubmittedPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
 
   const [popMessage, setPopMessage] = useState("");
@@ -24,6 +26,12 @@ export default function ForgotPassword() {
   const [emailSent, setEmailSent] = useState(false);
 
   const [resetCode, setResetCode] = useState("");
+
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+
+  const [generatedCode, setGeneratedCode] = useState("");
+
+  const lrc = useParams()?.reset_code;
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
@@ -37,43 +45,72 @@ export default function ForgotPassword() {
   const app = initializeApp(config);
   const db = getFirestore(app);
 
-  async function sendMail() {
-    var emailChecked = false;
-    var dynamicUsername = "";
-    var dynamicResetCode = "";
+  async function generateVerificationCode() {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < 20; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    setGeneratedCode(result);
+  }
 
+  async function resetPassword() {
+
+    var dynamicUser = ""
+    var dynamicEmail = ""
+    
     const q = query(
       collection(db, "Users"),
-      where("Email", "==", submittedEmail)
+      where("Password_Reset_Code", "==", lrc)
     );
     const querySnapshot = await getDocs(q);
 
+    if (querySnapshot.empty) {
+      console.log("Cannot find user with verification code.");
+      window.location.replace("/");
+      return;
+    }
+
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      if (data.Email == submittedEmail) {
-        emailChecked = true;
-        setUsername(data.Username);
-        setResetCode(data.Password_Reset_Code);
-        dynamicUsername = data.Username;
-        dynamicResetCode = data.Password_Reset_Code;
+
+      setUsername(data.Username);
+      setEmail(data.Email);
+      dynamicUser = data.Username
+      dynamicEmail = data.Email
+
+
+      if (submittedPassword !== "") {
+        updateDoc(doc.ref, {
+          Password: submittedPassword,
+          Password_Reset_Code: generatedCode,
+        });
+        setPopMessage("Password updated, you may now log in to your account.");
+
+        setPopMessageColor("#00b300");
+        sendMail(dynamicEmail, dynamicUser);
+      } else {
+        setPopMessage("Please enter a valid password.");
+        setPopMessageColor("#FF0000");
       }
     });
+  }
 
-    if (emailSent == false && emailChecked) {
+  async function sendMail(toMail: string, toUsername: string) {
+    if (emailSent == false) {
       const emailData = {
-        to: submittedEmail,
-        subject: "Reset Your Password to Continue Your Journey.",
-        message: `Greetings The Lost Adventurer,
-  
-Here's who you are: 
-Username: ${dynamicUsername}
-Email: ${submittedEmail}
-  
-Your journey has been stopped because you forgot which path you stepped. You're lost, yet eager to continue. It's our responsibility to trace you back to the path you've been going, but it's time to set a new path you tend to remember. Here's a link for you to reset your password, be well: 
-http://localhost:3000/reset-password/${dynamicResetCode}
-  
-We appreciate your effort in continuing to use our product. We will be delighted to see your return. Wish you the best.
-        
+        to: toMail,
+        subject: "Your Password Has Been Updated.",
+        message: `Greetings ${toUsername},
+
+This email is to inform you that your DotWebsHosting account password has been changed.
+
+You may now log in with your new password via this link: 
+http://localhost:3000/login
+
 Best Regards,
 Ricky Chan
 Founder
@@ -91,23 +128,21 @@ GoDotWebs
 
       if (response.ok) {
         console.log("Email sent successfully");
-        setPopMessage(
-          "Email successfully sent. Please check your precious mailbox. ✨"
-        );
-        setPopMessageColor("#00b300");
         setEmailSent(true);
         setTimeout(() => {
-          setEmailSent(false);
-        }, 25000);
+          window.location.replace("/login");
+        }, 2000);
       } else {
         console.error("Error sending email", response.statusText);
       }
     } else {
       console.log("Locked.");
-      setPopMessage("The email was not found in our database. / On cooldown");
-      setPopMessageColor("#FF0000");
     }
   }
+
+  useEffect(() => {
+    generateVerificationCode();
+  }, []);
 
   return (
     <>
@@ -117,16 +152,28 @@ GoDotWebs
             <p className="text-xl lg:text-2xl font-semibold">
               Work easy, work smoothly.
             </p>
-            <p className="lg:text-xl text-gray-600">
-              Replace your forgotten memory. 🧠
-            </p>
+            <p className="lg:text-xl text-gray-600">Reset your password. 🔑</p>
+
             <div className="mt-5">
-              <p className="text-gray-600 text-xs mt-5">Email Address</p>
+              <p className="text-gray-600 text-xs mt-5">New Password</p>
               <input
-                onChange={(event) => setSubmittedEmail(event.target.value)}
-                placeholder="Enter your email address..."
+                onChange={(event) => setSubmittedPassword(event.target.value)}
+                type={passwordVisibility == false ? "password" : ""}
+                placeholder="Enter your password..."
                 className="outline-blue-300 border-[.1em] w-full mt-2 p-2 rounded-md"
               ></input>
+              <a
+                onClick={() =>
+                  passwordVisibility == false
+                    ? setPasswordVisibility(true)
+                    : setPasswordVisibility(false)
+                }
+                className="text-sm underline cursor-pointer mt-2"
+              >
+                {passwordVisibility == false
+                  ? "Show Password"
+                  : "Hide Password"}
+              </a>
               <p className="mt-5 text-xs text-gray-600">
                 By submitting, you acknowledge our{" "}
                 <span className="underline cursor-pointer">
@@ -139,17 +186,16 @@ GoDotWebs
                 . We wish you a smooth experience with full protection.
               </p>
               <a
-                onClick={sendMail}
+                onClick={resetPassword}
                 className={
                   emailSent == false
                     ? "mt-5 mb-2 block text-xs bg-indigo-500 text-white text-center p-3 rounded-md cursor-pointer hover:brightness-[90%] duration-300"
                     : "mt-5 mb-2 block text-xs bg-gray-500 text-white text-center p-3 rounded-md cursor-pointer hover:brightness-[90%] duration-300"
                 }
               >
-                {emailSent == false
-                  ? "Verify Your Account"
-                  : "Verify Your Account (On 25 Seconds Cooldown)"}
+                Reset your Password
               </a>
+
               <p
                 style={{ color: popMessageColor }}
                 className="mt-5 text-center"

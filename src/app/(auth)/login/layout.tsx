@@ -2,6 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   getFirestore,
   doc,
@@ -145,9 +146,9 @@ export default function Login() {
                 Login to the GoDotWebs System
               </a>
 
-              <a className="tex-sm underline cursor-pointer">
+              <Link href={"/forgot-password"} className="tex-sm underline cursor-pointer">
                 Forgot Password?
-              </a>
+              </Link>
               <p
                 style={{ color: popMessageColor }}
                 className="text-center mt-5"

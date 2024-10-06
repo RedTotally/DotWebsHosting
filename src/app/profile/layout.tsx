@@ -131,7 +131,7 @@ export default function Profile() {
   async function sendMail() {
     if (verificationSent == false) {
       const emailData = {
-        to: "rickycandyred@gmail.com",
+        to: email,
         subject: "Your DotWebsHosting Verification is Readied.",
         message: `Greetings ${username},
   

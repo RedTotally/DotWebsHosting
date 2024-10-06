@@ -13,17 +13,31 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
+import { match } from "assert";
 
 export default function Panel() {
   const cookie = getCookie("_a");
 
+  type FileInfo = {
+    name: string;
+    size: number;
+    uploadDate: string;
+  };
+
+  const [listFiles, setListFiles] = useState<FileInfo[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [username, setUsername] = useState("");
   const [totalFiles, setTotalFiles] = useState<number>(0);
   const [totalSize, setTotalSize] = useState<string>("0 MB");
   const [rawSize, setRawSize] = useState<number>(0);
 
+  const [verified, setVerified] = useState();
+
   const [serverRunning, setServerRunning] = useState<boolean | null>(null);
+
+  const [selectedFile, setSelectedFile] = useState("");
+
+  const [newFileName, setNewFileName] = useState("");
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
@@ -61,6 +75,7 @@ export default function Panel() {
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       setUsername(data.Username);
+      setVerified(data.Verified);
       console.log("Data fetched.");
     });
   }
@@ -99,10 +114,26 @@ export default function Panel() {
   };
 
   const fetchStats = async () => {
+    var dynamicUser = "";
+
+    const q = query(
+      collection(db, "Users"),
+      where("Code", "==", Number(cookie))
+    );
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      dynamicUser = data.Username;
+      console.log("Data fetched.");
+    });
+
     try {
-      const response = await fetch("http://192.168.0.82:3000/stats");
+      const response = await fetch(
+        "http://192.168.0.82:3000/stats/" + dynamicUser
+      );
       const data = await response.json();
-      setTotalFiles(data.totalFiles);
+      setTotalFiles(data.totalFiles - 1);
       setTotalSize(data.totalSize);
       setRawSize(data.rawSize);
     } catch (error) {
@@ -122,8 +153,12 @@ export default function Panel() {
 
       if (selectedFilesSize < 1000000000) {
         if (selectedFiles.length > 0 && username) {
-          setFiles(selectedFiles);
-          handleUpload(selectedFiles);
+          if (verified == true) {
+            setFiles(selectedFiles);
+            handleUpload(selectedFiles);
+          } else {
+            console.log("Account not verified.");
+          }
         } else {
           alert("Please select files and enter a username to upload.");
         }
@@ -161,20 +196,93 @@ export default function Panel() {
       console.log(result);
       alert("Files uploaded successfully!");
       setFiles([]);
-      setUsername("");
+      window.location.reload();
     } catch (error) {
       console.error("Error uploading files:", error);
       alert("Error uploading files. Please try again.");
     }
   };
 
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const response = await fetch(
+          `http://192.168.0.82:3000/uploads/${username}/files`
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          const filteredFiles = data.files
+            .filter((file: { name: string }) => file.name !== "files")
+            .map(
+              (file: { name: string; size: number; uploadDate: string }) => ({
+                name: file.name,
+                size: (file.size / (1024 * 1024)).toFixed(2),
+                uploadDate: new Date(file.uploadDate).toLocaleDateString(),
+              })
+            );
+
+          setListFiles(filteredFiles);
+        } else {
+          console.error("Error fetching files:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching files:", error);
+      }
+    };
+
+    fetchFiles();
+  }, [username]);
+
+  async function deleteFile(username: string, filename: string) {
+    const response = await fetch(
+      `http://192.168.0.82:3000/delete/${username}/${filename}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (response.ok) {
+      console.log("File deleted successfully.");
+      window.location.reload();
+    } else {
+      console.error("Failed to delete file");
+    }
+  }
+
+  async function editFileName(
+    username: string,
+    oldName: string,
+    newName: string
+  ) {
+    const response = await fetch(
+      `http://192.168.0.82:3000/rename/${username}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ oldName, newName }),
+      }
+    );
+
+    if (response.ok) {
+      console.log("File renamed successfully.");
+      window.location.reload();
+    } else {
+      console.error("Failed to rename file");
+    }
+  }
+
   return (
     <div className="p-10">
       <div className="">
         <div className="flex justify-between items-center">
-          <p className="text-3xl font-bold">{username}&apos;s Hosting Overview</p>
-          <a className="text-sm bg-black text-white px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">
-            Download All Hosting Files
+          <p className="text-3xl font-bold">
+            {username}&apos;s Hosting Overview
+          </p>
+          <a className="font-semibold text-sm px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">
+            DoWebsPanel v1.0
           </a>
         </div>
         <hr className="mt-5 mb-5"></hr>
@@ -190,7 +298,8 @@ export default function Panel() {
               <p className="text-center text-3xl mt-5 font-bold">
                 {totalFiles}
               </p>
-              <p className="text-center text-gray-600">Hosting Files</p>
+              <p className="text-xs text-center text-gray-600">/ Unlimited</p>
+              <p className="text-center text-gray-600 mt-2">Hosting Files</p>
             </div>
             <div className="p-5 bg-white shadow-sm rounded-md border-[.1em]">
               <div className="flex justify-center">
@@ -200,7 +309,8 @@ export default function Panel() {
                 ></img>
               </div>
               <p className="text-center text-3xl mt-5 font-bold">{totalSize}</p>
-              <p className="text-center text-gray-600">File Size</p>
+              <p className="text-xs text-center text-gray-600">/ 10000 MB</p>
+              <p className="text-center text-gray-600 mt-2">File Size</p>
             </div>
             <div className="p-5 bg-white shadow-sm rounded-md border-[.1em]">
               <div className="flex justify-center">
@@ -216,11 +326,16 @@ export default function Panel() {
                     : "text-center text-3xl mt-5 font-bold text-green-500"
                 }
               >
-                {serverRunning === false || serverRunning === null
+                {serverRunning === false
                   ? "Deactivate"
+                  : serverRunning === null
+                  ? "Loading"
                   : "Activate"}
               </p>
-              <p className="text-center text-gray-600">Website Status</p>
+              <p className="text-xs text-center text-gray-600">
+                Secure Connected
+              </p>
+              <p className="text-center text-gray-600 mt-2">Hosting Status</p>
             </div>
           </div>
           <div className="col-span-3 hover:brightness-[90%] duration-300">
@@ -249,8 +364,79 @@ export default function Panel() {
       </div>
       <div className="flex justify-between items-center mt-10">
         <p className="text-3xl font-bold">Hosting Files</p>
+        <a onClick={() => {window.location.reload()}} className="text-sm bg-black text-white px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">
+          Refresh
+        </a>
       </div>
       <hr className="mt-5 mb-5"></hr>
+
+      <div className="border-[.1em] shadow-sm rounded-md bg-white overflow-x-auto">
+        <div className="w-[113.8em]">
+          <div
+            className="p-5 grid grid-cols-5 items-center hover:bg-gray-100 duration-300 cursor-pointer"
+          >
+            <p className="font-semibold">File Name</p>
+            <p className="text-center font-semibold">Upload ID</p>
+            <p className="text-center font-semibold">Upload Date</p>
+            <p className="text-center font-semibold">File Size</p>
+            <p className="text-center font-semibold">Server ID</p>
+          </div>
+          {listFiles.map((file, index) => (
+            <div key={index}>
+              <div
+                onClick={() => {
+                  selectedFile == file.name
+                    ? setSelectedFile("")
+                    : setSelectedFile(file.name);
+                }}
+                className="p-5 grid grid-cols-5 items-center hover:bg-gray-100 duration-300 cursor-pointer"
+              >
+                <div className="flex items-center">
+                  <img
+                    className="bg-indigo-500 p-3 rounded-full"
+                    src="/file.svg"
+                    alt="File icon"
+                  />
+                  <p className="ml-4">{file.name}</p>
+                </div>
+                <p className="text-center">N/A</p>
+                <p className="text-center">{file.uploadDate}</p>
+                <p className="text-center">{file.size} MB</p>
+                <p className="text-center">S00001</p>
+              </div>
+              <div
+                className={
+                  selectedFile == file.name
+                    ? "flex items-center justify-between p-5"
+                    : "hidden"
+                }
+              >
+                <a
+                  onClick={() => deleteFile(username, file.name)}
+                  className="px-16 py-2 bg-red-500 text-white rounded-md cursor-pointer duration-300 hover:brightness-[90%]"
+                >
+                  Delete File
+                </a>
+                <div className="flex items-center">
+                  <input
+                    onChange={(event) => setNewFileName(event.target.value)}
+                    placeholder="Enter a file name..."
+                    className="outline-blue-200 border-[.1em] w-[25em] p-2 rounded-md"
+                  ></input>
+                  <a
+                    onClick={() =>
+                      editFileName(username, file.name, newFileName)
+                    }
+                    className="ml-2 px-10 py-2 bg-indigo-500 rounded-md text-white cursor-pointer duration-300 hover:brightness-[90%]"
+                  >
+                    Rename File
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

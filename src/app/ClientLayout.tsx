@@ -217,20 +217,19 @@ export default function ClientLayout({
               </Link>
               <Link
                 href={"/panel/" + username}
-                onClick={() => [
-                  setOptionsVisibility(false),
-                  setMenuVisibility(false),
-                ]}
+                onClick={() => {
+                  setOptionsVisibility(false);
+                  setMenuVisibility(false);
+                }}
                 className="block px-12 p-3 hover:bg-gray-100 cursor-pointer duration-300 text-sm text-center"
               >
                 Your Panel
               </Link>
               <li
-                onClick={() => {
-                  setOptionsVisibility(false);
-                  setMenuVisibility(false);
-                  logOut();
-                }}
+onClick={() => {
+  setOptionsVisibility(false);
+  setMenuVisibility(false);
+}}
                 className="px-12 p-3 bg-black rounded-b-md text-white hover:brightness-[90%] cursor-pointer duration-300 text-sm text-center"
               >
                 Log Out

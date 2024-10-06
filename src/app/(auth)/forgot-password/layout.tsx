@@ -4,10 +4,6 @@ import { useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
   query,
   collection,
   where,
@@ -24,6 +20,8 @@ export default function ForgotPassword() {
   const [emailSent, setEmailSent] = useState(false);
 
   const [resetCode, setResetCode] = useState("");
+
+  console.log(username, resetCode)
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",

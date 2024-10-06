@@ -5,7 +5,6 @@ import { initializeApp } from "firebase/app";
 import { getCookie } from "cookies-next";
 import {
   getFirestore,
-  doc,
   updateDoc,
   collection,
   where,
@@ -28,6 +27,8 @@ export default function Verification() {
   const lvc = useParams()?.verification_code;
   const [username, setUsername] = useState("");
   const cookie = getCookie("_a");
+
+  console.log(username)
 
   async function matchValues() {
     if (!lvc) {

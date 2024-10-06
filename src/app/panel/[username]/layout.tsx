@@ -5,15 +5,11 @@ import { getCookie } from "cookies-next";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
-  doc,
-  setDoc,
-  getDoc,
   query,
   collection,
   where,
   getDocs,
 } from "firebase/firestore";
-import { match } from "assert";
 
 export default function Panel() {
   const cookie = getCookie("_a");

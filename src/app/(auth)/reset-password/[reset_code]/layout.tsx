@@ -5,9 +5,6 @@ import { useParams } from "next/navigation";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
-  doc,
-  setDoc,
-  getDoc,
   updateDoc,
   query,
   collection,
@@ -32,6 +29,8 @@ export default function Reset() {
   const [generatedCode, setGeneratedCode] = useState("");
 
   const lrc = useParams()?.reset_code;
+
+  console.log(email, username, resetCode)
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",

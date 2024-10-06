@@ -182,9 +182,7 @@ export default function ClientLayout({
           </Link>
           <a
             onClick={() => {
-              optionsVisibility == false
-                ? setOptionsVisibility(true)
-                : setOptionsVisibility(false);
+              setOptionsVisibility(!optionsVisibility);
             }}
             className={
               loggedIn == true

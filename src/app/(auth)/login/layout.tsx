@@ -14,7 +14,7 @@ import {
 import { setCookie, getCookie } from "cookies-next";
 
 export default function Login() {
-  var cookie = getCookie("_a");
+  let cookie = getCookie("_a");
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

@@ -110,7 +110,7 @@ export default function Panel() {
   };
 
   const fetchStats = async () => {
-    var dynamicUser = "";
+    let dynamicUser = "";
 
     const q = query(
       collection(db, "Users"),
@@ -360,7 +360,12 @@ export default function Panel() {
       </div>
       <div className="flex justify-between items-center mt-10">
         <p className="text-3xl font-bold">Hosting Files</p>
-        <a onClick={() => {window.location.reload()}} className="text-sm bg-black text-white px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">
+        <a
+          onClick={() => {
+            window.location.reload();
+          }}
+          className="text-sm bg-black text-white px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300"
+        >
           Refresh
         </a>
       </div>
@@ -368,9 +373,7 @@ export default function Panel() {
 
       <div className="border-[.1em] shadow-sm rounded-md bg-white overflow-x-auto">
         <div className="w-[113.8em]">
-          <div
-            className="p-5 grid grid-cols-5 items-center hover:bg-gray-100 duration-300 cursor-pointer"
-          >
+          <div className="p-5 grid grid-cols-5 items-center hover:bg-gray-100 duration-300 cursor-pointer">
             <p className="font-semibold">File Name</p>
             <p className="text-center font-semibold">Upload ID</p>
             <p className="text-center font-semibold">Upload Date</p>
@@ -381,9 +384,11 @@ export default function Panel() {
             <div key={index}>
               <div
                 onClick={() => {
-                  selectedFile == file.name
-                    ? setSelectedFile("")
-                    : setSelectedFile(file.name);
+                  if (selectedFile === file.name) {
+                    setSelectedFile("");
+                  } else {
+                    setSelectedFile(file.name);
+                  }
                 }}
                 className="p-5 grid grid-cols-5 items-center hover:bg-gray-100 duration-300 cursor-pointer"
               >

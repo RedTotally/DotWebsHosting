@@ -14,7 +14,7 @@ import {
 } from "firebase/firestore";
 
 export default function Profile() {
-  var cookie = getCookie("_a");
+  let cookie = getCookie("_a");
 
   const [username, setUsername] = useState("");
   const [fixedUsername, setFixedUsername] = useState("");
@@ -97,7 +97,7 @@ export default function Profile() {
   async function changeData() {
     const dataRef = doc(db, "Users", fixedUsername);
 
-    var lock = false;
+    let lock = false;
 
     if (
       newUsername.length <= 2 ||
@@ -200,11 +200,7 @@ GoDotWebs
               <p className="text-xs">{email}</p>
             </div>
             <a
-              onClick={() =>
-                usernameEditVisibility == false
-                  ? setUsernameEditVisibility(true)
-                  : setUsernameEditVisibility(false)
-              }
+              onClick={() => setUsernameEditVisibility(!usernameEditVisibility)}
               className="underline cursor-pointer text-indigo-500"
             >
               Edit
@@ -226,11 +222,7 @@ GoDotWebs
             {" "}
             <p className="text-xl">*********</p>
             <a
-              onClick={() =>
-                passwordEditVisibility == false
-                  ? setPasswordEditVisibility(true)
-                  : setPasswordEditVisibility(false)
-              }
+              onClick={() => setPasswordEditVisibility(!passwordEditVisibility)}
               className="underline cursor-pointer text-indigo-500"
             >
               Edit
@@ -257,11 +249,7 @@ GoDotWebs
             }
           ></input>
           <p
-            onClick={() => {
-              passwordVisibility == false
-                ? setPasswordVisibility(true)
-                : setPasswordVisibility(false);
-            }}
+            onClick={() => setPasswordVisibility(!passwordVisibility)}
             className={
               passwordEditVisibility == true
                 ? "text-sm mt-2 cursor-pointer underline"

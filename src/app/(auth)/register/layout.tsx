@@ -16,7 +16,7 @@ import {
 import { getCookie, setCookie } from "cookies-next";
 
 export default function Register() {
-  var cookie = getCookie("_a");
+  let cookie = getCookie("_a");
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -67,7 +67,7 @@ export default function Register() {
   }
 
   async function dataSubmit() {
-    var lock = false;
+    let lock = false;
 
     if (email == "" || username == "" || password == "") {
       lock = true;

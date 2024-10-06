@@ -22,15 +22,13 @@ export default function Reset() {
 
   const [emailSent, setEmailSent] = useState(false);
 
-  const [resetCode, setResetCode] = useState("");
-
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const [generatedCode, setGeneratedCode] = useState("");
 
   const lrc = useParams()?.reset_code;
 
-  console.log(email, username, resetCode)
+  console.log(email, username)
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
@@ -58,8 +56,8 @@ export default function Reset() {
 
   async function resetPassword() {
 
-    var dynamicUser = ""
-    var dynamicEmail = ""
+    let dynamicUser = ""
+    let dynamicEmail = ""
     
     const q = query(
       collection(db, "Users"),

@@ -6,9 +6,6 @@ import { getCookie, setCookie } from "cookies-next";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
-  doc,
-  setDoc,
-  getDoc,
   query,
   collection,
   where,
@@ -20,15 +17,15 @@ export default function ClientLayout({
 }: {
   children: React.ReactNode;
 }) {
-  var cookie = getCookie("_a");
+  let cookie = getCookie("_a");
 
   const [menuVisibility, setMenuVisibility] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [username, setUsername] = useState("");
-  const [verified, setVerified] = useState()
+  const [verified, setVerified] = useState();
 
-  const [optionsVisibility, setOptionsVisibility] = useState(false)
+  const [optionsVisibility, setOptionsVisibility] = useState(false);
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
@@ -54,13 +51,16 @@ export default function ClientLayout({
   }
 
   async function checkUser() {
-    const q = query(collection(db, "Users"), where("Code", "==", Number(cookie)));
+    const q = query(
+      collection(db, "Users"),
+      where("Code", "==", Number(cookie))
+    );
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       setUsername(data.Username);
-      setVerified(data.Verified)
+      setVerified(data.Verified);
       console.log("Data fetched.");
     });
   }
@@ -71,14 +71,28 @@ export default function ClientLayout({
   }, []);
 
   async function logOut() {
-    setCookie("_a", "")
-    window.location.replace("/")
+    setCookie("_a", "");
+    window.location.replace("/");
   }
 
   return (
     <>
-    <div className={verified == false ? "bg-red-500" : "hidden"}><p className="text-white p-3 text-center">Your account isn't verified yet. To unlock all the features, please go to your <Link href={"/profile"} className="underline cursor-pointer">profile</Link> to verify your account.</p></div>
-    <div onClick={() => setOptionsVisibility(false)} className={optionsVisibility == true ? "fixed w-full h-full z-[98]" : "hidden"}></div>
+      <div className={verified == false ? "bg-red-500" : "hidden"}>
+        <p className="text-white p-3 text-center">
+          Your account isn&apos;t verified yet. To unlock all the features,
+          please go to your{" "}
+          <Link href={"/profile"} className="underline cursor-pointer">
+            profile
+          </Link>{" "}
+          to verify your account.
+        </p>
+      </div>
+      <div
+        onClick={() => setOptionsVisibility(false)}
+        className={
+          optionsVisibility == true ? "fixed w-full h-full z-[98]" : "hidden"
+        }
+      ></div>
       <div className="opacity-[50%] fixed inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
       <nav className="bg-white py-5 p-10 lg:flex items-center justify-between">
@@ -164,15 +178,59 @@ export default function ClientLayout({
           >
             Get DoWebsHosting Free
           </Link>
-          <a onClick={() => {optionsVisibility == false ? setOptionsVisibility(true) : setOptionsVisibility(false)}} className={loggedIn == true ? "flex items-center cursor-pointer text-2xl lg:text-base" : "hidden"}>
+          <a
+            onClick={() => {
+              optionsVisibility == false
+                ? setOptionsVisibility(true)
+                : setOptionsVisibility(false);
+            }}
+            className={
+              loggedIn == true
+                ? "flex items-center cursor-pointer text-2xl lg:text-base"
+                : "hidden"
+            }
+          >
             <img className="w-10 lg:w-auto mr-2" src="/account.svg"></img>
             {username}
           </a>
-          <div className={optionsVisibility == true ? "rounded-md absolute lg:right-0 z-[99] bg-white mt-2 lg:mt-44 shadow-sm border-[.1em]" : "hidden"}>
+          <div
+            className={
+              optionsVisibility == true
+                ? "rounded-md absolute lg:right-0 z-[99] bg-white mt-2 lg:mt-44 shadow-sm border-[.1em]"
+                : "hidden"
+            }
+          >
             <ul>
-              <Link href={"/profile"} onClick={() => [setOptionsVisibility(false), setMenuVisibility(false)]} className="block px-12 p-3 hover:bg-gray-100 cursor-pointer duration-300 text-sm text-center">Your Profile</Link>
-              <Link href={"/panel/" + username} onClick={() => [setOptionsVisibility(false), setMenuVisibility(false)]} className="block px-12 p-3 hover:bg-gray-100 cursor-pointer duration-300 text-sm text-center">Your Panel</Link>
-              <li onClick={() => [setOptionsVisibility(false), setMenuVisibility(false), logOut()]} className="px-12 p-3 bg-black rounded-b-md text-white hover:brightness-[90%] cursor-pointer duration-300 text-sm text-center">Log Out</li>
+              <Link
+                href={"/profile"}
+                onClick={() => {
+                  setOptionsVisibility(false);
+                  setMenuVisibility(false);
+                }}
+                className="block px-12 p-3 hover:bg-gray-100 cursor-pointer duration-300 text-sm text-center"
+              >
+                Your Profile
+              </Link>
+              <Link
+                href={"/panel/" + username}
+                onClick={() => [
+                  setOptionsVisibility(false),
+                  setMenuVisibility(false),
+                ]}
+                className="block px-12 p-3 hover:bg-gray-100 cursor-pointer duration-300 text-sm text-center"
+              >
+                Your Panel
+              </Link>
+              <li
+                onClick={() => {
+                  setOptionsVisibility(false);
+                  setMenuVisibility(false);
+                  logOut();
+                }}
+                className="px-12 p-3 bg-black rounded-b-md text-white hover:brightness-[90%] cursor-pointer duration-300 text-sm text-center"
+              >
+                Log Out
+              </li>
             </ul>
           </div>
         </div>

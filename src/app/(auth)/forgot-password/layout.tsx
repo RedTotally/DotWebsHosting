@@ -36,9 +36,9 @@ export default function ForgotPassword() {
   const db = getFirestore(app);
 
   async function sendMail() {
-    var emailChecked = false;
-    var dynamicUsername = "";
-    var dynamicResetCode = "";
+    let emailChecked = false;
+    let dynamicUsername = "";
+    let dynamicResetCode = "";
 
     const q = query(
       collection(db, "Users"),

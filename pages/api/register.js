@@ -20,6 +20,7 @@ const handler = async (req, res) => {
 
       return res.status(201).json({ message: 'User registered and directories created.' });
     } catch (error) {
+        console.log(error)
       return res.status(500).json({ error: 'Error creating directories' });
     }
   } else {

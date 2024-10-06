@@ -41,12 +41,10 @@ export default function ClientLayout({
 
   async function checkStatus() {
     console.log(cookie);
-
-    if (cookie) {
-      if (cookie.length > 0) {
-        console.log("Logged in");
-        setLoggedIn(true);
-      }
+  
+    if (cookie && cookie.length > 0) {
+      console.log("Logged in");
+      setLoggedIn(true);
     }
   }
 
@@ -56,8 +54,8 @@ export default function ClientLayout({
       where("Code", "==", Number(cookie))
     );
     const querySnapshot = await getDocs(q);
-  
-    if (!querySnapshot.empty) {  
+
+    if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         setUsername(data.Username);
@@ -226,10 +224,11 @@ export default function ClientLayout({
                 Your Panel
               </Link>
               <li
-onClick={() => {
-  setOptionsVisibility(false);
-  setMenuVisibility(false);
-}}
+                onClick={() => {
+                  logOut();
+                  setOptionsVisibility(false);
+                  setMenuVisibility(false);
+                }}
                 className="px-12 p-3 bg-black rounded-b-md text-white hover:brightness-[90%] cursor-pointer duration-300 text-sm text-center"
               >
                 Log Out

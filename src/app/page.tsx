@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
 
   const [loggedIn, setLoggedIn] = useState(false)
-  let cookie = getCookie("_a")
+  const cookie = getCookie("_a")
 
   async function checkLoggedIn() {
     if(cookie){

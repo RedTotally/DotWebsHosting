@@ -14,7 +14,7 @@ import {
 } from "firebase/firestore";
 
 export default function Profile() {
-  let cookie = getCookie("_a");
+  const cookie = getCookie("_a");
 
   const [username, setUsername] = useState("");
   const [fixedUsername, setFixedUsername] = useState("");

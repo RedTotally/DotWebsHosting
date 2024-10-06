@@ -17,7 +17,7 @@ export default function ClientLayout({
 }: {
   children: React.ReactNode;
 }) {
-  let cookie = getCookie("_a");
+  const cookie = getCookie("_a");
 
   const [menuVisibility, setMenuVisibility] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -56,13 +56,17 @@ export default function ClientLayout({
       where("Code", "==", Number(cookie))
     );
     const querySnapshot = await getDocs(q);
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      setUsername(data.Username);
-      setVerified(data.Verified);
-      console.log("Data fetched.");
-    });
+  
+    if (!querySnapshot.empty) {  
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        setUsername(data.Username);
+        setVerified(data.Verified);
+        console.log("Data fetched.");
+      });
+    } else {
+      console.log("No user found.");
+    }
   }
 
   useEffect(() => {

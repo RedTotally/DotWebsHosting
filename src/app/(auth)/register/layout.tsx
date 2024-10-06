@@ -16,7 +16,7 @@ import {
 import { getCookie, setCookie } from "cookies-next";
 
 export default function Register() {
-  let cookie = getCookie("_a");
+  const  cookie = getCookie("_a");
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");

@@ -1,5 +1,3 @@
-export const runtime = 'edge';
-
 import { IncomingForm } from "formidable";
 import fs from "fs";
 import path from "path";

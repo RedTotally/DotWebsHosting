@@ -150,7 +150,7 @@ GoDotWebs
   `,
       };
 
-      const response = await fetch("http://192.168.0.82:3001/send-email", {
+      const response = await fetch("http://123.202.173.245:3001/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

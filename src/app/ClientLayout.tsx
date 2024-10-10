@@ -134,7 +134,7 @@ export default function ClientLayout({
               src="/close.svg"
             ></img>
           </div>
-          <div className="mt-5 lg:mt-0"></div>
+          <div className="mt-10 lg:mt-0"></div>
           <Link
             onClick={() => setMenuVisibility(false)}
             href={"/about-us"}

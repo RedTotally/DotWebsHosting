@@ -35,6 +35,8 @@ export default function Panel() {
 
   const [newFileName, setNewFileName] = useState("");
 
+  const [search, setSearch] = useState("")
+
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
     authDomain: "godotwebs.firebaseapp.com",
@@ -98,7 +100,7 @@ export default function Panel() {
 
   const checkServerStatus = async () => {
     try {
-      const response = await fetch("http://192.168.0.82:3000/status");
+      const response = await fetch("https://dotwebshosting.com/uploads/status");
       const data = await response.json();
       if (data.running) {
         setServerRunning(true);
@@ -126,7 +128,7 @@ export default function Panel() {
 
     try {
       const response = await fetch(
-        "http://192.168.0.82:3000/stats/" + dynamicUser
+        "https://dotwebshosting.com/uploads/stats/" + dynamicUser
       );
       const data = await response.json();
       setTotalFiles(data.totalFiles - 1);
@@ -179,7 +181,7 @@ export default function Panel() {
     });
 
     try {
-      const response = await fetch("http://192.168.0.82:3000/upload", {
+      const response = await fetch("https://dotwebshosting.com/uploads/upload", {
         method: "POST",
         body: formData,
       });
@@ -203,7 +205,7 @@ export default function Panel() {
     const fetchFiles = async () => {
       try {
         const response = await fetch(
-          `http://192.168.0.82:3000/uploads/${username}/files`
+          `https://dotwebshosting.com/uploads/uploads/${username}/files`
         );
         const data = await response.json();
 
@@ -232,7 +234,7 @@ export default function Panel() {
 
   async function deleteFile(username: string, filename: string) {
     const response = await fetch(
-      `http://192.168.0.82:3000/delete/${username}/${filename}`,
+      `https://dotwebshosting.com/uploads/delete/${username}/${filename}`,
       {
         method: "DELETE",
       }
@@ -252,7 +254,7 @@ export default function Panel() {
     newName: string
   ) {
     const response = await fetch(
-      `http://192.168.0.82:3000/rename/${username}`,
+      `https://dotwebshosting.com/uploads/rename/${username}`,
       {
         method: "PUT",
         headers: {
@@ -273,16 +275,16 @@ export default function Panel() {
   return (
     <div className="p-10">
       <div className="">
-        <div className="flex justify-between items-center">
-          <p className="text-3xl font-bold">
+        <div className="lg:flex justify-between items-center">
+          <p className="lg:text-3xl font-bold">
             {username}&apos;s Hosting Overview
           </p>
-          <a className="font-semibold text-sm px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">
+          <a className="font-semibold text-sm lg:px-5 py-1 rounded-full cursor-pointer hover:brightness-[90%] duration-300">
             DoWebsPanel v1.0
           </a>
         </div>
         <hr className="mt-5 mb-5"></hr>
-        <div className="grid grid-cols-4 gap-5 mt-5">
+        <div className="lg:grid grid-cols-4 gap-5 mt-5">
           <div className="grid grid-rows-3 gap-5">
             <div className="p-5 bg-white shadow-sm rounded-md border-[.1em]">
               <div className="flex justify-center">
@@ -334,7 +336,7 @@ export default function Panel() {
               <p className="text-center text-gray-600 mt-2">Hosting Status</p>
             </div>
           </div>
-          <div className="col-span-3 hover:brightness-[90%] duration-300">
+          <div className="h-[45em] lg:h-auto mt-5 lg:mt-0 col-span-3 hover:brightness-[90%] duration-300">
             <div className="bg-white flex items-center justify-center border-[.1em] shadow-sm rounded-md w-full h-full">
               <input
                 className="w-full h-full bg-black rounded-md opacity-0 relative z-[50] cursor-pointer"
@@ -342,14 +344,14 @@ export default function Panel() {
                 onChange={handleFileChange}
                 multiple
               />
-              <div className="absolute">
+              <div className="absolute p-14">
                 <div className="flex justify-center">
                   <img
                     className="w-[15em]"
                     src="/undraw_my_files_swob.svg"
                   ></img>
                 </div>
-                <p className="text-xs mt-5">
+                <p className="text-xs text-center mt-5">
                   Let us handle your files gently, drag them here. Or, you can
                   actually click here.
                 </p>
@@ -359,7 +361,7 @@ export default function Panel() {
         </div>
       </div>
       <div className="flex justify-between items-center mt-10">
-        <p className="text-3xl font-bold">Hosting Files</p>
+        <p className="lg:text-3xl font-bold">Hosting Files</p>
         <a
           onClick={() => {
             window.location.reload();
@@ -370,6 +372,8 @@ export default function Panel() {
         </a>
       </div>
       <hr className="mt-5 mb-5"></hr>
+
+      <input onChange={(event) => setSearch(event.target.value)} className="mb-5 border-[.1em] p-5 w-full rounded-md outline-blue-200" placeholder="Search for something..."></input>
 
       <div className="border-[.1em] shadow-sm rounded-md bg-white overflow-x-auto">
         <div className="w-[113.8em]">
@@ -390,7 +394,7 @@ export default function Panel() {
                     setSelectedFile(file.name);
                   }
                 }}
-                className="p-5 grid grid-cols-5 items-center hover:bg-gray-100 duration-300 cursor-pointer"
+                className={file.name.toLowerCase().includes(search.toLowerCase()) || search == "" ? "p-5 grid grid-cols-5 items-center hover:bg-gray-100 duration-300 cursor-pointer" : "hidden"}
               >
                 <div className="flex items-center">
                   <img

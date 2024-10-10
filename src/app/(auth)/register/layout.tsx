@@ -84,14 +84,14 @@ export default function Register() {
     }
 
     if (
-      username.length <= 2 ||
-      username.length >= 15 ||
+      username.length <= 13 ||
+      username.length >= 30 ||
       /[!@#$%^&*()_+{}:"<>?=;',./ ]/.test(username)
     ) {
       lock = true;
       console.log("Invalid username error R002");
       setPopMessage(
-        "Please enter a valid username. It should be 3-16 characters long and special characters should not be included."
+        "Please enter a valid username. It should be 14-29 characters long and special characters should not be included."
       );
       setPopMessageColor("#FF0000");
     }

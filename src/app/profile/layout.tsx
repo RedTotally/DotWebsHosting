@@ -158,6 +158,11 @@ GoDotWebs
         body: JSON.stringify(emailData),
       });
 
+      setPopMessage_2(
+        "Delivering... ✨"
+      );
+      setPopMessageColor("#00b300");
+
       if (response.ok) {
         console.log("Email sent successfully");
         setPopMessage_2(

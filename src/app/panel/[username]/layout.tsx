@@ -202,10 +202,25 @@ export default function Panel() {
   };
 
   useEffect(() => {
+    
     const fetchFiles = async () => {
+      let dynamicUser = "";
+
+    const q = query(
+      collection(db, "Users"),
+      where("Code", "==", Number(cookie))
+    );
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      dynamicUser = data.Username;
+      console.log("Data fetched.");
+    });
+
       try {
         const response = await fetch(
-          `https://dotwebshosting.com/uploads/uploads/${username}/files`
+          `https://dotwebshosting.com/uploads/uploads/${dynamicUser}/files`
         );
         const data = await response.json();
 

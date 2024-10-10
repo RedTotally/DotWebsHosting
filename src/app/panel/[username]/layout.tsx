@@ -100,7 +100,7 @@ export default function Panel() {
 
   const checkServerStatus = async () => {
     try {
-      const response = await fetch("https://dotwebshosting.com/uploads/status");
+      const response = await fetch("https://dotwebshosting.com/public/status");
       const data = await response.json();
       if (data.running) {
         setServerRunning(true);
@@ -128,7 +128,7 @@ export default function Panel() {
 
     try {
       const response = await fetch(
-        "https://dotwebshosting.com/uploads/stats/" + dynamicUser
+        "https://dotwebshosting.com/public/stats/" + dynamicUser
       );
       const data = await response.json();
       setTotalFiles(data.totalFiles - 1);
@@ -181,7 +181,7 @@ export default function Panel() {
     });
 
     try {
-      const response = await fetch("https://dotwebshosting.com/uploads/upload", {
+      const response = await fetch("https://dotwebshosting.com/public/upload", {
         method: "POST",
         body: formData,
       });
@@ -220,7 +220,7 @@ export default function Panel() {
 
       try {
         const response = await fetch(
-          `https://dotwebshosting.com/uploads/uploads/${dynamicUser}/files`
+          `https://dotwebshosting.com/public/uploads/${dynamicUser}/files`
         );
         const data = await response.json();
 
@@ -249,7 +249,7 @@ export default function Panel() {
 
   async function deleteFile(username: string, filename: string) {
     const response = await fetch(
-      `https://dotwebshosting.com/uploads/delete/${username}/${filename}`,
+      `https://dotwebshosting.com/public/delete/${username}/${filename}`,
       {
         method: "DELETE",
       }
@@ -269,7 +269,7 @@ export default function Panel() {
     newName: string
   ) {
     const response = await fetch(
-      `https://dotwebshosting.com/uploads/rename/${username}`,
+      `https://dotwebshosting.com/public/rename/${username}`,
       {
         method: "PUT",
         headers: {

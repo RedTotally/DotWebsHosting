@@ -249,7 +249,7 @@ export default function Panel() {
 
   async function deleteFile(username: string, filename: string) {
     const response = await fetch(
-      `https://dotwebshosting.com/public/delete/${username.toLowerCase()}/${filename}`,
+      `https://dotwebshosting.com/delete/${username.toLowerCase()}/${filename}`,
       {
         method: "DELETE",
       }
@@ -269,7 +269,7 @@ export default function Panel() {
     newName: string
   ) {
     const response = await fetch(
-      `https://dotwebshosting.com/public/rename/${username.toLowerCase()}`,
+      `https://dotwebshosting.com/rename/${username.toLowerCase()}`,
       {
         method: "PUT",
         headers: {

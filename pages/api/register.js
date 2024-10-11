@@ -5,7 +5,7 @@ const uploadDir = path.join(process.cwd(), 'uploads');
 
 const handler = async (req, res) => {
   if (req.method === 'POST') {
-    const username = req.body;
+    const username = req.body.toLowerCase();
 
     const userDir = path.join(uploadDir, username);
     const filesDir = path.join(userDir, 'files');

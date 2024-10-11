@@ -128,7 +128,7 @@ export default function Panel() {
 
     try {
       const response = await fetch(
-        "https://dotwebshosting.com/public/stats/" + dynamicUser.toLocaleLowerCase()
+        "https://dotwebshosting.com/public/stats/" + dynamicUser.toLowerCase()
       );
       const data = await response.json();
       setTotalFiles(data.totalFiles - 1);
@@ -220,7 +220,7 @@ export default function Panel() {
 
       try {
         const response = await fetch(
-          `https://dotwebshosting.com/public/uploads/${dynamicUser.toLocaleLowerCase()}/files`
+          `https://dotwebshosting.com/public/uploads/${dynamicUser.toLowerCase()}/files`
         );
         const data = await response.json();
 
@@ -249,7 +249,7 @@ export default function Panel() {
 
   async function deleteFile(username: string, filename: string) {
     const response = await fetch(
-      `https://dotwebshosting.com/public/delete/${username.toLocaleLowerCase()}/${filename}`,
+      `https://dotwebshosting.com/public/delete/${username.toLowerCase()}/${filename}`,
       {
         method: "DELETE",
       }
@@ -269,7 +269,7 @@ export default function Panel() {
     newName: string
   ) {
     const response = await fetch(
-      `https://dotwebshosting.com/public/rename/${username.toLocaleLowerCase()}`,
+      `https://dotwebshosting.com/public/rename/${username.toLowerCase()}`,
       {
         method: "PUT",
         headers: {

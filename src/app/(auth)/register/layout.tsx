@@ -185,7 +185,7 @@ export default function Register() {
   }, []);
 
   async function registrationSetUp() {
-    const response = await fetch('https://dotwebshosting.com/create-directory', {
+    const response = await fetch('https://dotwebshosting.com/public/create-directory', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username }),

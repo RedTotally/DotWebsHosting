@@ -175,7 +175,7 @@ export default function Panel() {
     }
 
     const formData = new FormData();
-    formData.append("username", username);
+    formData.append("username", username.toLowerCase());
     selectedFiles.forEach((file) => {
       formData.append("files", file);
     });

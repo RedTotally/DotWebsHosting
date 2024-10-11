@@ -289,6 +289,7 @@ export default function Panel() {
 
   return (
     <div className="p-10">
+      <div className="mb-10 lg:flex items-center justify-between bg-white p-5 border-[.1em] rounded-md shadow-sm"><p className="lg:text-xl font-semibold">Your DotWebsHosting Domain</p><p className="text-xs sm:text-base lg:text-xl text-green-500">{username.toLowerCase()}.dotwebshosting.com</p></div>
       <div className="">
         <div className="lg:flex justify-between items-center">
           <p className="lg:text-3xl font-bold">

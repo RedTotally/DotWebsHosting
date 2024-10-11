@@ -184,7 +184,7 @@ GoDotWebs
   return (
     <>
       <div className="p-10 flex justify-center mt-10">
-        <div className="w-full lg:w-[45em] lg:bg-white shadow-sm lg:border-[.1em] rounded-lg lg:p-20">
+        <div className="w-full lg:w-[45em] lg:bg-white lg:shadow-sm lg:border-[.1em] rounded-lg lg:p-20">
           <div>
             <img className="w-10" src="/account.svg"></img>
           </div>

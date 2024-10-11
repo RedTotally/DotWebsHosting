@@ -128,7 +128,7 @@ export default function Panel() {
 
     try {
       const response = await fetch(
-        "https://dotwebshosting.com/public/stats/" + dynamicUser
+        "https://dotwebshosting.com/public/stats/" + dynamicUser.toLocaleLowerCase()
       );
       const data = await response.json();
       setTotalFiles(data.totalFiles - 1);

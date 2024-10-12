@@ -320,8 +320,6 @@ export default function Panel() {
     } catch (error) {
       console.error("Error connecting domain:", error);
       console.log("An error occurred while connecting the domain.");
-      setPopMessage("Error on connecting your domain, did you set up the CNAME record correctly?")
-      setPopColor("#ff0000")
     }
   };
 

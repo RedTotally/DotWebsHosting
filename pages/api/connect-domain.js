@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     const lowerCaseUsername = username.toLowerCase();
 
     try {
-        const response = await fetch('http://192.168.0.82:3000/setup-domain', {
+        const response = await fetch('https://dotwebshosting.com/setup-domain', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

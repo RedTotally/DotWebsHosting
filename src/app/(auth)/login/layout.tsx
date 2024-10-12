@@ -79,7 +79,11 @@ export default function Login() {
 
   return (
     <>
-      <div className="mt-10 p-10 flex justify-center">
+      <form
+        className="cf-turnstile mt-10 p-10 flex justify-center"
+        data-sitekey="0x4AAAAAAAxSljFLuJnkNBsZ"
+        data-callback="0x4AAAAAAAxSlhhmEwDq5krrWlIOLJqT0Ns"
+      >
         <div className="lg:w-[30em]">
           <div className="lg:p-10">
             <p className="text-xl lg:text-2xl font-semibold">
@@ -145,7 +149,10 @@ export default function Login() {
                 Login to the GoDotWebs System
               </a>
 
-              <Link href={"/forgot-password"} className="tex-sm underline cursor-pointer">
+              <Link
+                href={"/forgot-password"}
+                className="tex-sm underline cursor-pointer"
+              >
                 Forgot Password?
               </Link>
               <p
@@ -157,7 +164,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 }

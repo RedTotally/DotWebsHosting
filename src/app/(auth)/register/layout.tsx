@@ -16,7 +16,7 @@ import {
 import { getCookie, setCookie } from "cookies-next";
 
 export default function Register() {
-  const  cookie = getCookie("_a");
+  const cookie = getCookie("_a");
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -185,22 +185,29 @@ export default function Register() {
   }, []);
 
   async function registrationSetUp() {
-    const response = await fetch('https://dotwebshosting.com/public/create-directory', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username }),
-    });
+    const response = await fetch(
+      "https://dotwebshosting.com/public/create-directory",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username }),
+      }
+    );
 
     if (response.ok) {
-      console.log('User registered and directories created successfully.');
+      console.log("User registered and directories created successfully.");
     } else {
-      console.error('Failed to create directories.');
+      console.error("Failed to create directories.");
     }
   }
 
   return (
     <>
-      <div className="mt-10 p-10 flex justify-center">
+      <form
+        className="cf-turnstile mt-10 p-10 flex justify-center"
+        data-sitekey="0x4AAAAAAAxSljFLuJnkNBsZ"
+        data-callback="0x4AAAAAAAxSlhhmEwDq5krrWlIOLJqT0Ns"
+      >
         <div className="lg:w-[30em]">
           <div className="lg:p-10">
             <p className="text-xl lg:text-2xl font-semibold">
@@ -280,7 +287,7 @@ export default function Register() {
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 }

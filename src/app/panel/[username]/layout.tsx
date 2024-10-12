@@ -35,7 +35,14 @@ export default function Panel() {
 
   const [newFileName, setNewFileName] = useState("");
 
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
+
+  const [domain, setDomain] = useState("");
+
+  const [connectVisibility, setConnectVisibility] = useState(false);
+
+  const [popMessage, setPopMessage] = useState("")
+  const [popColor, setPopColor] = useState("")
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
@@ -202,21 +209,20 @@ export default function Panel() {
   };
 
   useEffect(() => {
-    
     const fetchFiles = async () => {
       let dynamicUser = "";
 
-    const q = query(
-      collection(db, "Users"),
-      where("Code", "==", Number(cookie))
-    );
-    const querySnapshot = await getDocs(q);
+      const q = query(
+        collection(db, "Users"),
+        where("Code", "==", Number(cookie))
+      );
+      const querySnapshot = await getDocs(q);
 
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      dynamicUser = data.Username;
-      console.log("Data fetched.");
-    });
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        dynamicUser = data.Username;
+        console.log("Data fetched.");
+      });
 
       try {
         const response = await fetch(
@@ -287,9 +293,141 @@ export default function Panel() {
     }
   }
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Connecting domain...");
+
+    try {
+      const response = await fetch("/api/connect-domain", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, domain }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(`Domain ${domain} connected successfully.`);
+        setPopMessage("Domain connected successfully, keep in mind it might take 48 hours to take effect in some cases.")
+        setPopColor("#00ff00")
+      } else {
+        console.log(`Error: ${data.message || "Failed to connect domain"}`);
+        setPopMessage("Error on connecting your domain, did you set up the CNAME record correctly?")
+        setPopColor("#ff0000")
+      }
+    } catch (error) {
+      console.error("Error connecting domain:", error);
+      console.log("An error occurred while connecting the domain.");
+      setPopMessage("Error on connecting your domain, did you set up the CNAME record correctly?")
+      setPopColor("#ff0000")
+    }
+  };
+
   return (
     <div className="p-10">
-      <div className="mb-10 lg:flex items-center justify-between bg-white p-5 border-[.1em] rounded-md shadow-sm"><p className="lg:text-xl font-semibold">Your DotWebsHosting Domain</p><p className="text-xs sm:text-base lg:text-xl text-green-500">{username.toLowerCase()}.dotwebshosting.com</p></div>
+      <div
+        className={
+          connectVisibility == true
+            ? "px-10 fixed flex justify-center items-center top-0 left-0 bg-black bg-opacity-[10%] w-full h-full z-[99]"
+            : "hidden"
+        }
+      >
+        <div className="bg-white rounded-md shadow-sm border-[.1em] p-10 overflow-x-auto">
+          <div className="w-[55em]">
+            <p
+              onClick={() => setConnectVisibility(false)}
+              className="mb-5 bg-indigo-500 text-white px-5 p-2 rounded-md cursor-pointer hover:brightness-[90%] duration-300"
+            >
+              Close
+            </p>
+            <p className="font-semibold text-2xl">Work easy, work smoothly.</p>
+            <p className="text-xl text-gray-600">
+              Connect your domain to DotWebsHosting. 🌐
+            </p>
+            <hr className="mt-5 mb-3"></hr>
+            <div className="flex items-center">
+              <img
+                className="bg-indigo-500 p-2 rounded-full"
+                src="/domain.svg"
+              ></img>
+              <p className="ml-3 font-semibold">
+                Log in to your domain provider
+              </p>
+            </div>
+            <div className="flex items-center mt-3">
+              <img
+                className="bg-indigo-500 p-2 rounded-full"
+                src="/dns.svg"
+              ></img>
+              <p className="ml-3 font-semibold">
+                Open your domain DNS settings
+              </p>
+            </div>
+            <div className="flex items-center mt-3">
+              <img
+                className="bg-indigo-500 p-2 rounded-full"
+                src="/@.svg"
+              ></img>
+              <p className="ml-3 font-semibold">
+                Add a CNAME Record with @ in the Host section and your
+                DotWebHosting subdomain in the Value section.
+              </p>
+            </div>
+
+            <p className="mt-5 text-sm">Make sure it looks like this</p>
+            <div className="grid grid-cols-5 border-[.1em] p-5">
+              <p>Type</p>
+              <p>Host</p>
+              <p className="col-span-2">Value</p>
+              <p>TTL</p>
+            </div>
+
+            <div className="grid grid-cols-5 border-[.1em] border-t-0 p-5">
+              <p className="text-sm">CNAME Record</p>
+              <p className="text-sm">@</p>
+              <p className="text-sm col-span-2">
+                <span className="font-bold">yourusername</span>
+                .dotwebshosting.com
+              </p>
+              <p className="text-sm">Automatic</p>
+            </div>
+
+            <input
+              onChange={(event) => setDomain(event.target.value)}
+              placeholder="Enter your domain..."
+              className="mt-5 border-[.1em] outline-blue-200 p-2 w-full rounded-md"
+            ></input>
+            <a
+              onClick={handleSubmit}
+              className="block text-xs bg-indigo-500 w-full text-white text-center p-3 mt-3 rounded-md cursor-pointer hover:brightness-[90%] duration-300"
+            >
+              Submit to Our Database
+            </a>
+            <p style={{color: popColor}} className="mt-2">{popMessage}</p>
+            <p className="mt-2 text-sm">
+              Not quite understand? Go to our{" "}
+              <a className="underline text-indigo-500 cursor-pointer">
+                Document
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="mb-10 lg:flex items-center justify-between bg-white p-5 border-[.1em] rounded-md shadow-sm">
+        <p className="lg:text-xl font-semibold">Your DotWebsHosting Domain</p>
+        <p className="text-xs sm:text-base lg:text-xl text-green-500">
+          {username.toLowerCase()}.dotwebshosting.com{" "}
+          <a
+            onClick={() => setConnectVisibility(true)}
+            className="block text-sm text-black underline lg:text-center lg:p-1 cursor-pointer hover:brightness-[90%] duration-300"
+          >
+            Connect Your Own Domain
+          </a>
+        </p>
+      </div>
       <div className="">
         <div className="lg:flex justify-between items-center">
           <p className="lg:text-3xl font-bold">
@@ -389,7 +527,11 @@ export default function Panel() {
       </div>
       <hr className="mt-5 mb-5"></hr>
 
-      <input onChange={(event) => setSearch(event.target.value)} className="mb-5 border-[.1em] p-5 w-full rounded-md outline-blue-200" placeholder="Search for something..."></input>
+      <input
+        onChange={(event) => setSearch(event.target.value)}
+        className="mb-5 border-[.1em] p-5 w-full rounded-md outline-blue-200"
+        placeholder="Search for something..."
+      ></input>
 
       <div className="border-[.1em] shadow-sm rounded-md bg-white overflow-x-auto">
         <div className="w-[113.8em]">
@@ -410,7 +552,12 @@ export default function Panel() {
                     setSelectedFile(file.name);
                   }
                 }}
-                className={file.name.toLowerCase().includes(search.toLowerCase()) || search == "" ? "p-5 grid grid-cols-5 items-center hover:bg-gray-100 duration-300 cursor-pointer" : "hidden"}
+                className={
+                  file.name.toLowerCase().includes(search.toLowerCase()) ||
+                  search == ""
+                    ? "p-5 grid grid-cols-5 items-center hover:bg-gray-100 duration-300 cursor-pointer"
+                    : "hidden"
+                }
               >
                 <div className="flex items-center">
                   <img

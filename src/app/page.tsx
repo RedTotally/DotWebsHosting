@@ -100,7 +100,7 @@ export default function Home() {
 
         <div>
           <p className="font-bold text-3xl xl:text-6xl mt-20 lg:w-[15em]">
-          What's the purpose of the DotWebsHosting?
+          What is the purpose of the DotWebsHosting?
           </p>
         </div>
         <p className="mt-5 lg:text-xl text-gray-600">

@@ -60,7 +60,7 @@ const [search, setSearch] = useState("")
         </div>
         <div className={section == 5 ? "col-span-4 2xl:col-span-5 p-10 bg-white w-full h-[150em]" : "hidden"}>
           <p className="text-3xl font-bold">Connecting Domain</p>
-          <p className="mt-5 text-gray-600">It is possible to connect your own custom domain to your hosted site on DotWebsHosting.</p>
+          <p className="mt-5 text-gray-600">It is possible to connect your own custom domain to your hosted site on DotWebsHosting. More information will be given gradually.</p>
           <a onClick={() => setSection(1)} className="mt-10 block p-10 shadow-sm border-[.1em] rounded-xl font-semibold text-gray-600 cursor-pointer hover:brightness-[90%] duration-300">📖 Visit the next page — Introduction</a>
         </div>
       </div>

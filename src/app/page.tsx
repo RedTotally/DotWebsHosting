@@ -107,7 +107,7 @@ export default function Home() {
         Dedicated to assisting newbie developers who just finished their tutorial.
         </p>
 
-        <iframe className="border-[.1em] shadow-sm rounded-xl mt-10 w-full h-[60em]"
+        <iframe className="border-[.1em] shadow-sm rounded-xl mt-10 w-full h-[20em] sm:h-[25em] md:h-[30em] lg:h-[40em] xl:h-[60em]"
 src="https://www.youtube.com/embed/C5STXQvnPmk">
 </iframe>
 

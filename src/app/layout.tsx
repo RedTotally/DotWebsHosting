@@ -16,7 +16,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Home | DoWebsHosting",
-  description: "DotWebsHosting is one of the services of GoDotWebs, which holds the main functionality of providing a hosting service to host various websites. Users are expected to get a free domain, hosting service, and an extraordinary experience by registering for our service.",
+  description:
+    "DotWebsHosting is one of the services of GoDotWebs, which holds the main functionality of providing a hosting service to host various websites. Users are expected to get a free domain, hosting service, and an extraordinary experience by registering for our service.",
 };
 
 export default function RootLayout({
@@ -27,7 +28,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-      <meta name="keywords" content="hosting, web hosting, free hosting, free domain, website, website hosting, domain"></meta>
+        <meta
+          name="keywords"
+          content="hosting, web hosting, free hosting, free domain, website, website hosting, domain"
+        ></meta>
+        <meta name="twitter:title" content="DotWebsHosting"></meta>
+        <meta
+          name="twitter:description"
+          content="DotWebsHosting is one of the services of GoDotWebs, which holds the main functionality of providing a hosting service to host various websites. Users are expected to get a free domain, hosting service, and an extraordinary experience by registering for our service."
+        ></meta>
+        <meta name="twitter:image" content="/dotwebshosting.png"></meta>
+        <meta name="twitter:card" content="/overview.png"></meta>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

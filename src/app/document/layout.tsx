@@ -47,7 +47,7 @@ const [search, setSearch] = useState("")
           <p className="mt-5 text-gray-600">It is very easy and straightforward to upload your files into our panel.</p>
           <img className="border-[.1em] rounded-xl mt-5" src="/file.png"></img>
           <p className="mt-5 text-xl font-semibold">Drag or Click</p>
-          <p className="text-gray-600 mt-5">There is a huge box that includes the text "Let us handle your files gently, drag them here. Or, you can actually click here.". The box allows the user to upload files by clicking the box and selecting hosting-wanted files or by dragging particular files into the box.</p>
+          <p className="text-gray-600 mt-5">There is a huge box that includes the text &quot;Let us handle your files gently, drag them here. Or, you can actually click here.&quot;. The box allows the user to upload files by clicking the box and selecting hosting-wanted files or by dragging particular files into the box.</p>
           <a onClick={() => setSection(4)} className="mt-10 block p-10 shadow-sm border-[.1em] rounded-xl font-semibold text-gray-600 cursor-pointer hover:brightness-[90%] duration-300">🚪 Visit the next page — Accessing Website</a>
         </div>
         <div className={section == 4 ? "col-span-4 2xl:col-span-5 p-10 bg-white w-full h-[150em]" : "hidden"}>

@@ -264,13 +264,13 @@ export default function ClientLayout({
           <div className="mt-10 lg:mt-0 md:grid grid-cols-4 gap-10 xl:gap-20">
             <ul>
               <li className="text-xl font-bold">Registration</li>
-              <Link href={verified == false ? "/login" : ""} className="mt-2 block">Login</Link>
-              <Link href={verified == false ? "/register" : ""} className="mt-2 block">Register</Link>
+              <Link href={username == "" ? "/login" : ""} className="mt-2 block">Login</Link>
+              <Link href={username == "" ? "/register" : ""} className="mt-2 block">Register</Link>
             </ul>
 
             <ul className="mt-10 md:mt-0">
               <li className="text-xl font-bold">Service</li>
-              <Link href={verified == false ? "/register" : ""} className="mt-2 block">Hosting Service</Link>
+              <Link href={username == "" ? "/register" : ""} className="mt-2 block">Hosting Service</Link>
             </ul>
 
             <ul className="mt-10 md:mt-0">

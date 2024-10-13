@@ -100,13 +100,16 @@ export default function Home() {
 
         <div>
           <p className="font-bold text-3xl xl:text-6xl mt-20 lg:w-[15em]">
-            How efficient are we for the newbie developer?
+          What's the purpose of the DotWebsHosting?
           </p>
         </div>
         <p className="mt-5 lg:text-xl text-gray-600">
         Dedicated to assisting newbie developers who just finished their tutorial.
         </p>
-        <img className="border-[.1em] shadow-sm rounded-xl mt-20" src="/placeholder_2.png"></img>
+
+        <iframe className="border-[.1em] shadow-sm rounded-xl mt-10 w-full h-[60em]"
+src="https://www.youtube.com/embed/C5STXQvnPmk">
+</iframe>
 
         <div className="flex justify-center mt-20"><img className="lg:w-[15em]" src="/godotwebs.png"></img></div>
         <p className="text-center mt-5 text-2xl">Service Under The GoDotWebs System.</p>

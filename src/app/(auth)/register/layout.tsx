@@ -144,6 +144,7 @@ export default function Register() {
         Verification_Code: generatedCode,
         Password_Reset_Code: generatedCode_2,
       });
+      newUser();
       registrationSetUp();
       setCookie("_a", generatedCookieCode);
       console.log("Account created.");
@@ -198,6 +199,32 @@ export default function Register() {
       console.log("User registered and directories created successfully.");
     } else {
       console.error("Failed to create directories.");
+    }
+  }
+
+  async function newUser() {
+    const emailData = {
+      to: "rickycandyred@gmail.com",
+      subject: "A new user registered on DotWebsHosting.",
+      message: `A new user has been registered through the GoDotWebs system.
+Email: ${email}
+Username: ${username}
+      `,
+    };
+
+    const response = await fetch("https://dotwebshosting.com/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(emailData),
+    });
+    setPopMessageColor("#00b300");
+
+    if (response.ok) {
+      console.log("Email sent successfully");
+    } else {
+      console.error("Error sending email", response.statusText);
     }
   }
 

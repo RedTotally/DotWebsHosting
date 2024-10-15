@@ -80,7 +80,7 @@ export default function ClientLayout({
   return (
     <>
     <div className="bg-indigo-500 p-2">
-      <p className="text-center text-white text-xs">Basic functionality will be as provided normally. Advanced features like custom domain DNS proxy &#40;https://&#41; might take some time to get readied.</p>
+      <p className="text-center text-white text-xs">Every registered account in 2024 will be counted as part of the early users, which will be guaranteed to have 8 years of free services from us.</p>
     </div>
       <div className={verified == false ? "bg-red-500" : "hidden"}>
         <p className="text-white p-3 text-center">

@@ -58,9 +58,30 @@ const [search, setSearch] = useState("")
           <p className="text-gray-600 mt-5">You can access your given domain by typing it in your search bar.</p>
           <a onClick={() => setSection(5)} className="mt-10 block p-10 shadow-sm border-[.1em] rounded-xl font-semibold text-gray-600 cursor-pointer hover:brightness-[90%] duration-300">🌐 Visit the next page — Connecting Domain</a>
         </div>
-        <div className={section == 5 ? "col-span-4 2xl:col-span-5 p-10 bg-white w-full h-[150em]" : "hidden"}>
+        <div className={section == 5 ? "col-span-4 2xl:col-span-5 p-10 bg-white w-full h-[500em]" : "hidden"}>
           <p className="text-3xl font-bold">Connecting Domain</p>
-          <p className="mt-5 text-gray-600">It is possible to connect your own custom domain to your hosted site on DotWebsHosting. More information will be given gradually.</p>
+          <p className="mt-5 text-gray-600">It is possible to connect your own custom domain to your hosted site on DotWebsHosting. However, it might take some additional steps.</p>
+          <img className="border-[.1em] rounded-xl mt-5" src="/domain.png"></img>
+          <p className="mt-5 text-xl font-semibold">Open the Interface</p>
+          <p className="text-gray-600 mt-5">To begin with, you might want to open the Connect to Custom Domain interface by clicking the &#34;Connect Your Own Domain&#34; text on the right side of the domain section of the panel.</p>
+          <img className="border-[.1em] rounded-xl mt-5" src="/custom-domain.png"></img>
+          <p className="mt-5 text-xl font-semibold">Overview</p>
+          <p className="text-gray-600 mt-5">After you open the interface,<strong> you can submit the domain you would like to connect to us via the &#34;Submit to Our Database&#34; button with your domain submitted in the input field</strong>, and you might want to start following the steps. In this document, you will find all the necessary steps in detail.</p>
+          <img className="border-[.1em] rounded-xl mt-5" src="/namecheap-1.png"></img>
+          <p className="mt-5 text-xl font-semibold">Log in to Your Domain Provider</p>
+          <p className="text-gray-600 mt-5">In this case, I will be using Namecheap as an example of connecting your custom domain to our hosting service. It is surely welcome to use other providers. It depends on you.</p>
+          <img className="border-[.1em] rounded-xl mt-5" src="/namecheap-2.png"></img>
+          <p className="mt-5 text-xl font-semibold">Open Your Domain DNS Settings</p>
+          <p className="text-gray-600 mt-5">If you see options like &#34;Advanced DNS&#34; or &#34;DNS Settings&#34;. It might indicate that it is the correct place for you to link your custom domain to us.</p>
+          <img className="border-[.1em] rounded-xl mt-5" src="/namecheap-3.png"></img>
+          <p className="mt-5 text-xl font-semibold">Add A CNAME Record with @ in the Host section and Your DotWebsHosting subdomain in the Value section</p>
+          <p className="text-gray-600 mt-5">You might want to add a new type of CNAME record regarding how your domain provider lets you do the current step. As shown in the photo, the record should be in the form of CNAME, the host value should be &#34;@&#34;, and the value of the record should be entered according to your given domain. TTL will be up to you, it depends on how long until you want to make your domain work.</p>
+          <img className="border-[.1em] rounded-xl mt-5" src="/http.png"></img>
+          <p className="mt-5 text-xl font-semibold">HTTP</p>
+          <p className="text-gray-600 mt-5">At this point, you should be able to access your website via your custom domain with HTTP access.</p>
+          <hr className="mt-10 mb-10"></hr>
+          <p className="mt-5 text-xl font-semibold">HTTPS Solution</p>
+          <p className="text-gray-600 mt-5">As we are still working on the HTTPS certification feature for our users, you might consider an alternative way to secure your site with HTTPS using Cloudflare along with our hosting service.</p>
           <a onClick={() => setSection(1)} className="mt-10 block p-10 shadow-sm border-[.1em] rounded-xl font-semibold text-gray-600 cursor-pointer hover:brightness-[90%] duration-300">📖 Visit the next page — Introduction</a>
         </div>
       </div>

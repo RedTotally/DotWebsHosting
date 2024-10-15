@@ -10,6 +10,7 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
+import Link from "next/link";
 
 export default function Panel() {
   const cookie = getCookie("_a");
@@ -406,9 +407,9 @@ export default function Panel() {
             <p style={{color: popColor}} className="mt-2">{popMessage}</p>
             <p className="mt-2 text-sm">
               Not quite understand? Go to our{" "}
-              <a className="underline text-indigo-500 cursor-pointer">
+              <Link href={"/document"} className="underline text-indigo-500 cursor-pointer">
                 Document
-              </a>
+              </Link>
               .
             </p>
           </div>

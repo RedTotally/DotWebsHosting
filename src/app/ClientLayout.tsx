@@ -283,7 +283,7 @@ export default function ClientLayout({
             <ul className="mt-10 md:mt-0">
               <li className="text-xl font-bold">Legal</li>
               <Link href={"/terms-of-service"} className="mt-2 block">Terms of Service</Link>
-              <Link href={"/"} className="mt-2 block">Privacy Policies</Link>
+              <Link href={"/privacy-policies"} className="mt-2 block">Privacy Policies</Link>
             </ul>
           </div>
         </div>

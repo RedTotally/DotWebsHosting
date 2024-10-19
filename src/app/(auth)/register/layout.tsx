@@ -11,6 +11,7 @@ import {
   collection,
   where,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 
 import { getCookie, setCookie } from "cookies-next";
@@ -67,6 +68,8 @@ export default function Register() {
   }
 
   async function dataSubmit() {
+
+    recordData_Registration();
     let lock = false;
 
     if (email == "" || username == "" || password == "") {
@@ -164,8 +167,21 @@ export default function Register() {
     const data = document.data();
     if (data && data.User_Count !== null) {
       const count = data.User_Count;
-      setDoc(countDataRef, {
+      updateDoc(countDataRef, {
         User_Count: count + 1,
+      });
+    }
+  }
+
+  async function recordData_Registration() {
+    const countDataRef = doc(db, "User_Count", "User_Count");
+    const document = await getDoc(countDataRef);
+
+    const data = document.data();
+    if (data && data.User_Count !== null) {
+      const count = data.Registration_Clicks;
+      updateDoc(countDataRef, {
+        Registration_Clicks: count + 1,
       });
     }
   }

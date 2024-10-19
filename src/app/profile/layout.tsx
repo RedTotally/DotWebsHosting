@@ -128,6 +128,11 @@ export default function Profile() {
 
   async function sendMail() {
     if (verificationSent == false) {
+      setPopMessage_2(
+        "Delivering... ✨"
+      );
+      setPopMessageColor("#00b300");
+
       const emailData = {
         to: email,
         subject: "Your DotWebsHosting Verification is Readied.",

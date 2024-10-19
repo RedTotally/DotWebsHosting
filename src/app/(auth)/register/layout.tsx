@@ -146,6 +146,7 @@ export default function Register() {
       });
       newUser();
       registrationSetUp();
+      recordData();
       setCookie("_a", generatedCookieCode);
       console.log("Account created.");
       setPopMessage("Account created, please wait.");
@@ -154,8 +155,6 @@ export default function Register() {
     } else {
       console.log("Locked.");
     }
-
-    recordData();
   }
 
   async function recordData() {

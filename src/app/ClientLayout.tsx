@@ -130,7 +130,7 @@ export default function ClientLayout({
       const emailData = {
         to: "rickycandyred@gmail.com",
         subject: `From DotWebsHosting: A User Would Like to ${category}.`,
-        message: `A message has been sent through the GoDotWebs website.
+        message: `A message has been sent through the DotWebsHosting website.
 Category: ${category}
 Content: 
 ${inputArea}
@@ -150,10 +150,12 @@ ${inputArea}
         setPopMessage("Message successfully sent. ✨");
         setPopMessageColor("#00b300");
         if (
-          category == "Report an account malfunction" ||
-          "Report a service malfunction"
+          category == "Report an Account Malfunction" ||
+          "Report a Service Malfunction"
         ) {
           recordData_Malfunction();
+        }else{
+          console.log("Did not record.")
         }
         setTimeout(() => {
           setLock(false);

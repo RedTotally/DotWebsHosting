@@ -147,16 +147,11 @@ ${inputArea}
 
       if (response.ok) {
         console.log("Message sent successfully");
+        if(category !== "Get in Touch With Us"){
+          recordData_Malfunction();
+        }
         setPopMessage("Message successfully sent. ✨");
         setPopMessageColor("#00b300");
-        if (
-          category == "Report an Account Malfunction" ||
-          "Report a Service Malfunction"
-        ) {
-          recordData_Malfunction();
-        }else{
-          console.log("Did not record.")
-        }
         setTimeout(() => {
           setLock(false);
         }, 1000);

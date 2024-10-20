@@ -154,7 +154,9 @@ export default function Register() {
       console.log("Account created.");
       setPopMessage("Account created, please wait.");
       setPopMessageColor("#00b300");
-      window.location.replace("profile");
+      setTimeout(() => {
+        window.location.replace("profile");
+      }, 1000);
     } else {
       console.log("Locked.");
     }

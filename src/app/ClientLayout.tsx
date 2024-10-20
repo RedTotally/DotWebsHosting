@@ -147,9 +147,7 @@ ${inputArea}
 
       if (response.ok) {
         console.log("Email sent successfully");
-        setPopMessage(
-          "Message successfully sent. ✨"
-        );
+        setPopMessage("Message successfully sent. ✨");
         setPopMessageColor("#00b300");
         if (
           category == "Report an account malfunction" ||

@@ -146,7 +146,7 @@ ${inputArea}
       });
 
       if (response.ok) {
-        console.log("Email sent successfully");
+        console.log("Message sent successfully");
         setPopMessage("Message successfully sent. ✨");
         setPopMessageColor("#00b300");
         if (

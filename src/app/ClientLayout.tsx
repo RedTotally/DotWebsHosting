@@ -129,7 +129,7 @@ export default function ClientLayout({
 
       const emailData = {
         to: "rickycandyred@gmail.com",
-        subject: `From DotWebsHosting: A User Would Like to ${category.toLowerCase()}.`,
+        subject: `From DotWebsHosting: A User Would Like to ${category}.`,
         message: `A message has been sent through the GoDotWebs website.
 Category: ${category}
 Content: 
@@ -148,7 +148,7 @@ ${inputArea}
       if (response.ok) {
         console.log("Email sent successfully");
         setPopMessage(
-          "Email successfully sent. Please check your precious mailbox. ✨"
+          "Message successfully sent. ✨"
         );
         setPopMessageColor("#00b300");
         if (
@@ -162,7 +162,7 @@ ${inputArea}
         }, 1000);
       } else {
         console.error("Error sending email", response.statusText);
-        setPopMessage("Error sending email, please try again.");
+        setPopMessage("Error sending your message, please try again.");
         setPopMessageColor("#FF0000");
         setTimeout(() => {
           setLock(false);
@@ -189,16 +189,16 @@ ${inputArea}
             <span className="text-red-500 font-bold">{malfunctionCount}</span>
           </p>
           <div
-            onClick={() => setCategory("Report an account malfunction")}
+            onClick={() => setCategory("Report an Account Malfunction")}
             className={
-              category == "Report an account malfunction"
+              category == "Report an Account Malfunction"
                 ? "flex items-center mt-5 cursor-pointer p-5 rounded-md bg-indigo-100 duration-350"
                 : "flex items-center mt-5 cursor-pointer p-5 rounded-md hover:bg-gray-100 duration-350"
             }
           >
             <img src="/malfunction.svg"></img>
             <div className="ml-5">
-              <a className="block text-lg">Report an account malfunction</a>
+              <a className="block text-lg">Report an Account Malfunction</a>
               <p className="text-xs">
                 Have a problem with a blank account profile, malfunctioning
                 panel, or verification malfunction? Please write to us. We
@@ -208,16 +208,16 @@ ${inputArea}
           </div>
 
           <div
-            onClick={() => setCategory("Report a service malfunction")}
+            onClick={() => setCategory("Report a Service Malfunction")}
             className={
-              category == "Report a service malfunction"
+              category == "Report a Service Malfunction"
                 ? "flex items-center mt-2 cursor-pointer p-5 rounded-md bg-indigo-100 duration-350"
                 : "flex items-center mt-2 cursor-pointer p-5 rounded-md hover:bg-gray-100 duration-350"
             }
           >
             <img src="/error.svg"></img>
             <div className="ml-5">
-              <a className="block text-lg">Report a service malfunction</a>
+              <a className="block text-lg">Report a Service Malfunction</a>
               <p className="text-xs">
                 Have a problem with panel upload malfunction, file listing
                 malfunction, remove file malfunction, or file name editing
@@ -227,16 +227,16 @@ ${inputArea}
             </div>
           </div>
           <div
-            onClick={() => setCategory("Get in touch with us")}
+            onClick={() => setCategory("Get in Touch With Us")}
             className={
-              category == "Get in touch with us"
+              category == "Get in Touch With Us"
                 ? "flex items-center mt-2 cursor-pointer p-5 rounded-md bg-indigo-100 duration-350"
                 : "flex items-center mt-2 cursor-pointer p-5 rounded-md hover:bg-gray-100 duration-350"
             }
           >
             <img src="/chat.svg"></img>
             <div className="ml-5">
-              <a className="block text-lg">Get in touch with us</a>
+              <a className="block text-lg">Get in Touch With Us</a>
               <p className="text-xs">
                 Want to tell us something? It is completely welcome. We will
                 listen to your inquiries or literally anything. Send us

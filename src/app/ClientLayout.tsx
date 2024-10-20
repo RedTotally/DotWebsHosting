@@ -10,6 +10,9 @@ import {
   collection,
   where,
   getDocs,
+  doc,
+  updateDoc,
+  getDoc,
 } from "firebase/firestore";
 
 export default function ClientLayout({
@@ -27,6 +30,18 @@ export default function ClientLayout({
 
   const [optionsVisibility, setOptionsVisibility] = useState(false);
 
+  const [category, setCategory] = useState("");
+  const [inputArea, setInputArea] = useState("");
+
+  const [moreVisibility, setMoreVisibility] = useState(false);
+
+  const [malfunctionCount, setMalfunctionCount] = useState<number>(0);
+
+  const [lock, setLock] = useState(false);
+
+  const [popMessage, setPopMessage] = useState("");
+  const [popMessageColor, setPopMessageColor] = useState("");
+
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
     authDomain: "godotwebs.firebaseapp.com",
@@ -41,7 +56,7 @@ export default function ClientLayout({
 
   async function checkStatus() {
     console.log(cookie);
-  
+
     if (cookie && cookie.length > 0) {
       console.log("Logged in");
       setLoggedIn(true);
@@ -77,11 +92,199 @@ export default function ClientLayout({
     window.location.replace("/");
   }
 
+  async function updateWebData_Malfunction() {
+    const countDataRef = doc(db, "User_Count", "User_Count");
+    const document = await getDoc(countDataRef);
+
+    const data = document.data();
+    if (data && data.User_Count !== null) {
+      setMalfunctionCount(data.Malfunctions);
+    }
+  }
+
+  useEffect(() => {
+    updateWebData_Malfunction();
+  }, []);
+
+  async function recordData_Malfunction() {
+    const countDataRef = doc(db, "User_Count", "User_Count");
+    const document = await getDoc(countDataRef);
+
+    const data = document.data();
+    if (data && data.User_Count !== null) {
+      const count = data.Malfunctions;
+      updateDoc(countDataRef, {
+        Malfunctions: count + 1,
+      });
+      setMalfunctionCount(data.Malfunctions + 1);
+    }
+  }
+
+  async function sendMail() {
+    setLock(true);
+
+    if (lock == false) {
+      setPopMessage("Delivering... ✨");
+      setPopMessageColor("#00b300");
+
+      const emailData = {
+        to: "rickycandyred@gmail.com",
+        subject: `From DotWebsHosting: A User Would Like to ${category.toLowerCase()}.`,
+        message: `A message has been sent through the GoDotWebs website.
+Category: ${category}
+Content: 
+${inputArea}
+    `,
+      };
+
+      const response = await fetch("https://dotwebshosting.com/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(emailData),
+      });
+
+      if (response.ok) {
+        console.log("Email sent successfully");
+        setPopMessage(
+          "Email successfully sent. Please check your precious mailbox. ✨"
+        );
+        setPopMessageColor("#00b300");
+        if (
+          category == "Report an account malfunction" ||
+          "Report a service malfunction"
+        ) {
+          recordData_Malfunction();
+        }
+        setTimeout(() => {
+          setLock(false)
+        }, 1000);
+      } else {
+        console.error("Error sending email", response.statusText);
+        setPopMessage(
+          "Error sending email, please try again."
+        );
+        setPopMessageColor("#FF0000");
+        setTimeout(() => {
+          setLock(false)
+        }, 1000);
+      }
+    } else {
+      console.log("Locked.");
+    }
+  }
+
   return (
     <>
-    <div className="bg-indigo-500 p-2">
-      <p className="text-center text-white text-xs">Every registered account in 2024 will be counted as part of the early users, which will be guaranteed to have 8 years of free services from us.</p>
-    </div>
+      <div className="relative z-[100] overflow-x-auto overflow-y-auto">
+        <div
+          className={
+            moreVisibility == true
+              ? "rounded-md fixed lg:w-[35em] lg:bottom-[7em] top-[1em] lg:top-auto left-[2em] lg:left-auto right-[2em] bg-white shadow-sm border-[.1em] p-10"
+              : "hidden"
+          }
+        >
+          <p className="text-xl font-semibold">Heya, I would like to...</p>
+          <p className="text-xs mt-1">
+            Is our service down? Current malfunction report:{" "}
+            <span className="text-red-500 font-bold">{malfunctionCount}</span>
+          </p>
+          <div
+            onClick={() => setCategory("Report an account malfunction")}
+            className={
+              category == "Report an account malfunction"
+                ? "flex items-center mt-5 cursor-pointer p-5 rounded-md bg-indigo-100 duration-350"
+                : "flex items-center mt-5 cursor-pointer p-5 rounded-md hover:bg-gray-100 duration-350"
+            }
+          >
+            <img src="/malfunction.svg"></img>
+            <div className="ml-5">
+              <a className="block text-lg">Report an account malfunction</a>
+              <p className="text-xs">
+                Have a problem with a blank account profile, malfunctioning
+                panel, or verification malfunction? Please write to us. We
+                apologize for the inconvenience caused by such a problem.
+              </p>
+            </div>
+          </div>
+
+          <div
+            onClick={() => setCategory("Report a service malfunction")}
+            className={
+              category == "Report a service malfunction"
+                ? "flex items-center mt-2 cursor-pointer p-5 rounded-md bg-indigo-100 duration-350"
+                : "flex items-center mt-2 cursor-pointer p-5 rounded-md hover:bg-gray-100 duration-350"
+            }
+          >
+            <img src="/error.svg"></img>
+            <div className="ml-5">
+              <a className="block text-lg">Report a service malfunction</a>
+              <p className="text-xs">
+                Have a problem with panel upload malfunction, file listing
+                malfunction, remove file malfunction, or file name editing
+                malfunction? Please write to us. We are deeply sorry for causing
+                such an inconvenience.
+              </p>
+            </div>
+          </div>
+          <div
+            onClick={() => setCategory("Get in touch with us")}
+            className={
+              category == "Get in touch with us"
+                ? "flex items-center mt-2 cursor-pointer p-5 rounded-md bg-indigo-100 duration-350"
+                : "flex items-center mt-2 cursor-pointer p-5 rounded-md hover:bg-gray-100 duration-350"
+            }
+          >
+            <img src="/chat.svg"></img>
+            <div className="ml-5">
+              <a className="block text-lg">Get in touch with us</a>
+              <p className="text-xs">
+                Want to tell us something? It is completely welcome. We will
+                listen to your inquiries or literally anything. Send us
+                something!
+              </p>
+            </div>
+          </div>
+          <textarea
+            onChange={(event) => setInputArea(event.target.value)}
+            placeholder="Write something..."
+            className="border-[.1em] rounded-md w-full mt-5 p-5 outline-blue-200 text-sm"
+          ></textarea>
+          <a
+            onClick={sendMail}
+            className={
+              lock == false
+                ? "block text-sm mt-2 text-center bg-indigo-500 p-3 text-white rounded-md hover:brightness-[90%] duration-300 cursor-pointer"
+                : "block text-sm mt-2 text-center bg-gray-500 p-3 text-white rounded-md hover:brightness-[90%] duration-300 cursor-pointer"
+            }
+          >
+            Submit
+          </a>
+          <p
+            style={{ color: popMessageColor }}
+            className="mt-2 text-xs text-center"
+          >
+            {popMessage}
+          </p>
+        </div>
+        <img
+          onClick={() =>
+            moreVisibility == false
+              ? setMoreVisibility(true)
+              : setMoreVisibility(false)
+          }
+          className="fixed bottom-[2em] right-[2em] bg-indigo-500 p-5 rounded-full shadow-md cursor-pointer"
+          src="/more.svg"
+        ></img>
+      </div>
+      <div className="bg-indigo-500 p-2">
+        <p className="text-center text-white text-xs">
+          Every registered account in 2024 will be counted as part of the early
+          users, which will be guaranteed to have 8 years of free services from
+          us.
+        </p>
+      </div>
       <div className={verified == false ? "bg-red-500" : "hidden"}>
         <p className="text-white p-3 text-center">
           Your account isn&apos;t verified yet. To unlock all the features,
@@ -264,26 +467,59 @@ export default function ClientLayout({
           <div className="mt-10 lg:mt-0 md:grid grid-cols-4 gap-10 xl:gap-20">
             <ul>
               <li className="text-xl font-bold">Registration</li>
-              <Link href={username == "" ? "/login" : ""} className="mt-2 block">Login</Link>
-              <Link href={username == "" ? "/register" : ""} className="mt-2 block">Register</Link>
+              <Link
+                href={username == "" ? "/login" : ""}
+                className="mt-2 block"
+              >
+                Login
+              </Link>
+              <Link
+                href={username == "" ? "/register" : ""}
+                className="mt-2 block"
+              >
+                Register
+              </Link>
             </ul>
 
             <ul className="mt-10 md:mt-0">
               <li className="text-xl font-bold">Service</li>
-              <Link href={username == "" ? "/register" : ""} className="mt-2 block">Hosting Service</Link>
+              <Link
+                href={username == "" ? "/register" : ""}
+                className="mt-2 block"
+              >
+                Hosting Service
+              </Link>
             </ul>
 
             <ul className="mt-10 md:mt-0">
               <li className="text-xl font-bold">Information</li>
-              <Link target="_blank" href={"https://godotwebs.com"} className="mt-2 block">Our Company</Link>
-              <Link target="_blank" href={"https://godotwebs.com/about-us"} className="mt-2 block">About Us</Link>
-              <Link href={"document"} className="mt-2 block">Documentation</Link>
+              <Link
+                target="_blank"
+                href={"https://godotwebs.com"}
+                className="mt-2 block"
+              >
+                Our Company
+              </Link>
+              <Link
+                target="_blank"
+                href={"https://godotwebs.com/about-us"}
+                className="mt-2 block"
+              >
+                About Us
+              </Link>
+              <Link href={"document"} className="mt-2 block">
+                Documentation
+              </Link>
             </ul>
 
             <ul className="mt-10 md:mt-0">
               <li className="text-xl font-bold">Legal</li>
-              <Link href={"/terms-of-service"} className="mt-2 block">Terms of Service</Link>
-              <Link href={"/privacy-policies"} className="mt-2 block">Privacy Policies</Link>
+              <Link href={"/terms-of-service"} className="mt-2 block">
+                Terms of Service
+              </Link>
+              <Link href={"/privacy-policies"} className="mt-2 block">
+                Privacy Policies
+              </Link>
             </ul>
           </div>
         </div>

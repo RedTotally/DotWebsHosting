@@ -222,7 +222,7 @@ export default function Register() {
   async function newUser() {
     const emailData = {
       to: "rickycandyred@gmail.com",
-      subject: "A new user registered on DotWebsHosting.",
+      subject: "A New User Registered on DotWebsHosting.",
       message: `A new user has been registered through the GoDotWebs system.
 Email: ${email}
 Username: ${username}

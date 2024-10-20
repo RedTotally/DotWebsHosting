@@ -158,16 +158,14 @@ ${inputArea}
           recordData_Malfunction();
         }
         setTimeout(() => {
-          setLock(false)
+          setLock(false);
         }, 1000);
       } else {
         console.error("Error sending email", response.statusText);
-        setPopMessage(
-          "Error sending email, please try again."
-        );
+        setPopMessage("Error sending email, please try again.");
         setPopMessageColor("#FF0000");
         setTimeout(() => {
-          setLock(false)
+          setLock(false);
         }, 1000);
       }
     } else {

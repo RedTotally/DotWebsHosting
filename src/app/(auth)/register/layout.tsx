@@ -152,11 +152,11 @@ export default function Register() {
       recordData();
       setCookie("_a", generatedCookieCode);
       console.log("Account created.");
-      setPopMessage("Account created, please wait.");
+      setPopMessage("Account created, and processing, please wait... 👏");
       setPopMessageColor("#00b300");
       setTimeout(() => {
         window.location.replace("profile");
-      }, 1000);
+      }, 6500);
     } else {
       console.log("Locked.");
     }

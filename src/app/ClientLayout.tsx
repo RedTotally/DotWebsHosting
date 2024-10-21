@@ -174,7 +174,7 @@ ${inputArea}
         <div
           className={
             moreVisibility == true
-              ? "rounded-md fixed lg:w-[35em] lg:bottom-[7em] top-[1em] lg:top-auto left-[2em] lg:left-auto right-[2em] bg-white shadow-sm border-[.1em] p-10 max-h-[80vh] overflow-auto"
+              ? "rounded-md fixed lg:w-[35em] lg:bottom-[7em] top-[1em] lg:top-auto left-[1em] lg:left-auto right-[1em] bg-white shadow-sm border-[.1em] p-5 max-h-[80vh] overflow-auto"
               : "hidden"
           }
         >

@@ -170,11 +170,11 @@ ${inputArea}
 
   return (
     <>
-      <div className="relative z-[100] overflow-x-auto overflow-y-auto">
+      <div className="relative z-[100]">
         <div
           className={
             moreVisibility == true
-              ? "rounded-md fixed lg:w-[35em] lg:bottom-[7em] top-[1em] lg:top-auto left-[2em] lg:left-auto right-[2em] bg-white shadow-sm border-[.1em] p-10"
+              ? "rounded-md fixed lg:w-[35em] lg:bottom-[7em] top-[1em] lg:top-auto left-[2em] lg:left-auto right-[2em] bg-white shadow-sm border-[.1em] p-10 max-h-[80vh] overflow-auto"
               : "hidden"
           }
         >

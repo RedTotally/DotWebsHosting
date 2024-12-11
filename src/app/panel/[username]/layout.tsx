@@ -98,9 +98,9 @@ export default function Panel() {
 
   const [secureBannerVisibility, setSecureBannerVisibility] = useState(false);
 
-  const [pinPopVisibility, setPinPopVisibility] = useState(false)
+  const [pinPopVisibility, setPinPopVisibility] = useState(false);
 
-  const [pinLocked, setPinLocked] = useState(false)
+  const [pinLocked, setPinLocked] = useState(false);
 
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
@@ -156,10 +156,10 @@ export default function Panel() {
   async function getPin() {
     if (cookie_2 !== undefined) {
       if (cookie_2.length > 0) {
-        setPinLocked(true)
+        setPinLocked(true);
         setSecureBannerVisibility(true);
-      }else{
-        setPinLocked(false)
+      } else {
+        setPinLocked(false);
       }
     }
   }
@@ -356,22 +356,22 @@ export default function Panel() {
   }, [username, selectedFolder]);
 
   async function deleteFile(username: string, filename: string) {
-    if(pinLocked == false){
+    if (pinLocked == false) {
       const response = await fetch(
         `https://dotwebshosting.com/delete/${username.toLowerCase()}/${selectedFolder}/${filename}`,
         {
           method: "DELETE",
         }
       );
-  
+
       if (response.ok) {
         console.log("File deleted successfully.");
         window.location.reload();
       } else {
         console.error("Failed to delete file");
       }
-    }else{
-      setPinPopVisibility(true)
+    } else {
+      setPinPopVisibility(true);
     }
   }
 
@@ -380,7 +380,7 @@ export default function Panel() {
     oldName: string,
     newName: string
   ) {
-    if(pinLocked == false){
+    if (pinLocked == false) {
       const response = await fetch(
         `https://dotwebshosting.com/rename/${username.toLowerCase()}/${selectedFolder}`,
         {
@@ -391,15 +391,15 @@ export default function Panel() {
           body: JSON.stringify({ oldName, newName }),
         }
       );
-  
+
       if (response.ok) {
         console.log("File renamed successfully.");
         window.location.reload();
       } else {
         console.error("Failed to rename file");
       }
-    }else{
-      setPinPopVisibility(true)
+    } else {
+      setPinPopVisibility(true);
     }
   }
 
@@ -483,6 +483,8 @@ export default function Panel() {
         subfolder: selectedFolder,
       }),
     });
+    if (response.ok) {
+    }
   }
 
   async function gitClone() {
@@ -539,7 +541,7 @@ export default function Panel() {
   }
 
   async function nextBuild() {
-    let finished = false;
+    const finished = false;
 
     setHostPopText("Building is in progress...");
     setHostPopTextColor("#00b300");
@@ -704,62 +706,68 @@ export default function Panel() {
   }
 
   async function updatePin() {
+    if (pinLocked == false) {
+      if (pin1 + pin2 + pin3 >= 0 * 3 && pin1 + pin2 + pin3 <= 9 * 3) {
+        const combinedPin = pin1.toString() + pin2.toString() + pin3.toString();
+        setCookie("_p", combinedPin, {
+          maxAge: 604800,
+        });
 
-    if(pinLocked == false){
-      
-    if (pin1 + pin2 + pin3 >= 0 * 3 && pin1 + pin2 + pin3 <= 9 * 3) {
-      let combinedPin = pin1.toString() + pin2.toString() + pin3.toString();
-      setCookie("_p", combinedPin, {
-        maxAge: 604800,
-      });
-
-      setTimeout(() => {
-        location.reload();
-      }, 100);
+        setTimeout(() => {
+          location.reload();
+        }, 100);
+      } else {
+        setPinPopText(
+          "Error on enabling the secure mode. Please consider re-checking your inputted pin."
+        );
+      }
     } else {
-      setPinPopText(
-        "Error on enabling the secure mode. Please consider re-checking your inputted pin."
-      );
-    }
-    }else{
-      setPinPopVisibility(true)
+      setPinPopVisibility(true);
     }
   }
 
   async function matchPin() {
-    if(pinLocked == true){
-      let pin = matchPin1.toString() + matchPin2.toString() + matchPin3.toString()
+    if (pinLocked == true) {
+      const pin =
+        matchPin1.toString() + matchPin2.toString() + matchPin3.toString();
 
-      if(pin == cookie_2){
-        console.log("matched")
-        setPinPopVisibility(false)
-        setPinLocked(false)
-      }else{
-        console.log("unmatched")
+      if (pin == cookie_2) {
+        console.log("matched");
+        setPinPopVisibility(false);
+        setPinLocked(false);
+      } else {
+        console.log("unmatched");
       }
-    }else{
-      console.log("Unlocked")
+    } else {
+      console.log("Unlocked");
     }
   }
 
   /* Run Constantly */
-  matchPin()
+  matchPin();
 
   async function disableSecureMode() {
-    if(pinLocked == false){
-      deleteCookie('_p')
+    if (pinLocked == false) {
+      deleteCookie("_p");
       location.reload();
-    }else{
-      setPinPopVisibility(true)
+    } else {
+      setPinPopVisibility(true);
     }
   }
 
   return (
     <>
-      <div className={pinPopVisibility == true ? "fixed bg-black bg-opacity-[10%] w-full h-full top-0 flex justify-center items-center z-[99]" : "hidden"}>
+      <div
+        className={
+          pinPopVisibility == true
+            ? "fixed bg-black bg-opacity-[10%] w-full h-full top-0 flex justify-center items-center z-[99]"
+            : "hidden"
+        }
+      >
         <div className="bg-white p-5 rounded-lg">
           <p className="text-sm">
-            Please enter your PIN code to unlock <strong>one</strong> action in total.
+            Please enter your PIN code to unlock <strong>one</strong> action in
+            total.
           </p>
           <div className="grid grid-cols-3 gap-5 mt-2">
             <input
@@ -808,7 +816,12 @@ export default function Panel() {
         <p className="text-white text-center p-1 z-[98] text-xs">
           Your panel is currently protected by the secure mode to prevent
           unconscious actions.{" "}
-          <span onClick={disableSecureMode} className="underline cursor-pointer">Disable</span>
+          <span
+            onClick={disableSecureMode}
+            className="underline cursor-pointer"
+          >
+            Disable
+          </span>
         </p>
       </div>
       <div className="p-10">
@@ -908,8 +921,11 @@ export default function Panel() {
               <p className="text-sm">Please choose one specific site type</p>
 
               <div
-                onClick=
-                {() => pinLocked == false ? setChosenHost("Next.JS") : setPinPopVisibility(true)}
+                onClick={() =>
+                  pinLocked == false
+                    ? setChosenHost("Next.JS")
+                    : setPinPopVisibility(true)
+                }
                 className={
                   chosenHost == "Next.JS"
                     ? "border-indigo-500 flex items-center p-5 duration-150 cursor-pointer mt-5 rounded-lg shadow-sm border-[.1em]"
@@ -920,9 +936,13 @@ export default function Panel() {
                 <p className="ml-2">Next.JS</p>
               </div>
               <a
-                onClick={() => pinLocked == false ?  breakVisibility == false
-                  ? setBreakVisibility(true)
-                  : setBreakVisibility(false) : setPinPopVisibility(true)}
+                onClick={() =>
+                  pinLocked == false
+                    ? breakVisibility == false
+                      ? setBreakVisibility(true)
+                      : setBreakVisibility(false)
+                    : setPinPopVisibility(true)
+                }
                 className="text-xs underline cursor-pointer text-red-500"
               >
                 Break Connection
@@ -1124,7 +1144,9 @@ export default function Panel() {
                 className="mt-5 border-[.1em] outline-blue-200 p-2 w-full rounded-md"
               ></input>
               <a
-                onClick={() => pinLocked == false ? handleSubmit : setPinPopVisibility(true)}
+                onClick={() =>
+                  pinLocked == false ? handleSubmit : setPinPopVisibility(true)
+                }
                 className="block text-xs bg-indigo-500 w-full text-white text-center p-3 mt-3 rounded-md cursor-pointer hover:brightness-[90%] duration-300"
               >
                 Submit to Our Database
@@ -1249,9 +1271,7 @@ export default function Panel() {
           <div>
             <div
               onClick={() => {
-                addNewFolderVisibility == false
-                  ? setAddNewFolderVisibility(true)
-                  : setAddNewFolderVisibility(false);
+                setAddNewFolderVisibility(!addNewFolderVisibility);
               }}
               className="border-[.1em] p-10 bg-white rounded-md shadow-sm cursor-pointer hover:brightness-[90%] duration-300"
             >
@@ -1273,7 +1293,11 @@ export default function Panel() {
                 placeholder="Folder name..."
               ></input>
               <div
-                onClick={() => pinLocked == false ? createFolder() : setPinPopVisibility(true)}
+                onClick={() =>
+                  pinLocked == false
+                    ? createFolder()
+                    : setPinPopVisibility(true)
+                }
                 className="border-t-[.1em] border-r-[.1em] border-b-[.1em] border-black p-2 bg-black text-white rounded-r-md cursor-pointer duration-300 hover:brightness-[90%]"
               >
                 <img src="/add.svg"></img>
@@ -1351,7 +1375,11 @@ export default function Panel() {
             /{username.toLowerCase()}/{selectedFolder}
           </p>
           <div
-            onClick={() => pinLocked == false ? [removeFolder(), setSelectedFolder("files")] : setPinPopVisibility(true)}
+            onClick={() =>
+              pinLocked == false
+                ? [removeFolder(), setSelectedFolder("files")]
+                : setPinPopVisibility(true)
+            }
             className={
               selectedFolder !== "files"
                 ? "w-[10em] text-sm text-red-500 flex items-center hover:underline cursor-pointer"
@@ -1446,12 +1474,13 @@ export default function Panel() {
                   >
                     <div
                       onClick={() => {
-                        confirm == true
-                          ? [setConfirm(false), deleteFile(username, file.name)]
-                          : setConfirm(true);
+                        if (confirm) {
+                          setConfirm(false);
+                          deleteFile(username, file.name);
+                        } else {
+                          setConfirm(true);
+                        }
                       }}
-                      
-                      
                       className="hover:underline flex items-center px-3 py-2 text-red-500 rounded-md cursor-pointer duration-300 hover:brightness-[90%]"
                     >
                       <img src="/trash.svg"></img>
@@ -1467,12 +1496,12 @@ export default function Panel() {
                       ></input>
                       <div
                         onClick={() => {
-                          confirmRename == true
-                            ? [
-                                editFileName(username, file.name, newFileName),
-                                setConfirmRename(false),
-                              ]
-                            : setConfirmRename(true);
+                          if (confirmRename) {
+                            editFileName(username, file.name, newFileName);
+                            setConfirmRename(false);
+                          } else {
+                            setConfirmRename(true);
+                          }
                         }}
                         className="hover:underline flex items-center px-10 py-1 rounded-md text-indigo-500 cursor-pointer duration-300 hover:brightness-[90%]"
                       >
@@ -1534,11 +1563,11 @@ export default function Panel() {
                     }
                   >
                     <div
-                      onClick={() => {
-                        confirm == true
-                          ? [setConfirm(false), deleteFile(username, file.name)]
-                          : setConfirm(true);
-                      }}
+                      onClick={() =>
+                        confirm
+                          ? (setConfirm(false), deleteFile(username, file.name))
+                          : setConfirm(true)
+                      }
                       className="hover:underline flex items-center px-3 py-2 text-red-500 rounded-md cursor-pointer duration-300 hover:brightness-[90%]"
                     >
                       <img src="/trash.svg"></img>
@@ -1554,12 +1583,12 @@ export default function Panel() {
                       ></input>
                       <div
                         onClick={() => {
-                          confirmRename == true
-                            ? [
-                                editFileName(username, file.name, newFileName),
-                                setConfirmRename(false),
-                              ]
-                            : setConfirmRename(true);
+                          if (confirmRename) {
+                            editFileName(username, file.name, newFileName);
+                            setConfirmRename(false);
+                          } else {
+                            setConfirmRename(true);
+                          }
                         }}
                         className="hover:underline flex items-center px-10 py-1 rounded-md text-indigo-500 cursor-pointer duration-300 hover:brightness-[90%]"
                       >

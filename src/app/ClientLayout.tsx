@@ -271,7 +271,7 @@ ${inputArea}
           src="/more.svg"
         ></img>
       </div>
-      <div className="bg-indigo-500 p-2">
+      <div className="hidden bg-indigo-500 p-2">
         <p className="text-center text-white text-xs">
           Every registered account in 2024 will be counted as part of the early
           users, which will be guaranteed to have 8 years of free services from

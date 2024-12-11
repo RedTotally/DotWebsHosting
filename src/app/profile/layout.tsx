@@ -211,7 +211,7 @@ GoDotWebs
             </div>
             <a
               onClick={() => setUsernameEditVisibility(!usernameEditVisibility)}
-              className="underline cursor-pointer text-indigo-500"
+              className="underline cursor-pointer text-indigo-500 hidden"
             >
               Edit
             </a>

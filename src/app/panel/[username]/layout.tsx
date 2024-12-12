@@ -102,8 +102,6 @@ export default function Panel() {
 
   const [pinLocked, setPinLocked] = useState(false);
 
-  const [dectectedFolder, setDetectedFolder] = useState("");
-
   const config = {
     apiKey: "AIzaSyCwKzycTLiWhHoHIeqUeLrVQXSQKLBowVQ",
     authDomain: "godotwebs.firebaseapp.com",
@@ -345,12 +343,6 @@ export default function Panel() {
           );
 
         setListFiles(filteredFiles);
-
-        filteredFiles
-          .filter((file: { isFile: boolean }) => file.isFile === false)
-          .map((file: { [key: string]: any }, index: number) =>
-            setDetectedFolder(file.name)
-          );
       } else {
         console.error("Error fetching files:", data.error);
       }

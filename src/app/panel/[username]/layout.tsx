@@ -280,7 +280,7 @@ export default function Panel() {
     try {
       /*Please remember to add the /public/ back after the development.*/
       const response = await fetch(
-        `https://dotwebshosting.com/public/upload/${selectedFolder}`,
+        `https://dotwebshosting.com/public/upload`,
         {
           method: "POST",
           body: formData,

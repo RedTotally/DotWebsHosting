@@ -142,7 +142,7 @@ export default function Register() {
         Fixed_Username: username,
         Password: password,
         Code: generatedCookieCode,
-        Verified: true,
+        Verified: false,
         Product: "DotWebsHosting",
         Verification_Code: generatedCode,
         Password_Reset_Code: generatedCode_2,

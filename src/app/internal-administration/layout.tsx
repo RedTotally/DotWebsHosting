@@ -8,7 +8,6 @@ import {
   collection,
   where,
   getDocs,
-  updateDoc,
 } from "firebase/firestore";
 
 import { getCookie } from "cookies-next";

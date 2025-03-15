@@ -135,7 +135,7 @@ export default function Profile() {
 
       const emailData = {
         to: email,
-        subject: "Your DotWebsHosting Verification is Readied.",
+        subject: "Your DotWebsHosting Verification Mail is Here!",
         message: `Greetings ${username},
   
 You signed up for our DotWebsHosting service along with the GoDotWebs system.

@@ -143,7 +143,7 @@ You signed up for our DotWebsHosting service along with the GoDotWebs system.
 Username: ${username}
 Email: ${email}
   
-It's a pleasure to see such a valuable user like you. Nevertheless, we have to verify your email identity to protect our user base. We hope for your understanding. Thus, please verify your email via the link below: 
+It is a pleasure to see such a valuable user like you. To protect our user base, your email must be verified. We hope for your understanding and please verify your email via the link below: 
 https://dotwebshosting.com/verification/${verificationCode}
   
 By verifying your account, you will be officially recognized as a part of us and in our great GoDotWebs system. We are delighted to see you around and wish you the best.
